@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\GameProject\\OOPFinal\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C69F412B-F09F-4F27-81F7-9F45029A9BC9}|OOPFinal\\OOPFinal.vcxproj|D:\\GameProject\\OOPFinal\\OOPFinal\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C69F412B-F09F-4F27-81F7-9F45029A9BC9}|OOPFinal\\OOPFinal.vcxproj|solutionrelative:OOPFinal\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "D:\\GameProject\\OOPFinal\\OOPFinal\\main.cpp",
+              "RelativeDocumentMoniker": "OOPFinal\\main.cpp",
+              "ToolTip": "D:\\GameProject\\OOPFinal\\OOPFinal\\main.cpp",
+              "RelativeToolTip": "OOPFinal\\main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-14T01:44:18.955Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
