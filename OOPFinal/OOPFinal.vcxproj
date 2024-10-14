@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\GameProject\SDL2-2.30.6\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\GameProject\SDL2-2.30.6\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\GameProject\SDL2-2.30.6\include;D:\GameProject\SDL2_image-2.8.2\include;D:\GameProject\SDL2_mixer-2.8.0\include;D:\GameProject\SDL2_ttf-2.22.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\GameProject\SDL2-2.30.6\lib\x86;D:\GameProject\SDL2_image-2.8.2\lib\x86;D:\GameProject\SDL2_mixer-2.8.0\lib\x86;D:\GameProject\SDL2_ttf-2.22.0\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,7 +84,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -132,7 +132,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseFunction.cpp" />
+    <ClCompile Include="BaseObject.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseFunction.h" />
+    <ClInclude Include="BaseObject.h" />
+    <ClInclude Include="Character.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

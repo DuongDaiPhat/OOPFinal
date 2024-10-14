@@ -11,7 +11,7 @@ public:
 	SDL_Rect GetRect();
 	void SetRect(int x, int y, int w, int h);
 	SDL_Texture* GetTexture();
-	bool LoadImage(const string file_path);
-	void Render(SDL_Renderer* screem, SDL_Rect* clip);
+	bool LoadImage(SDL_Renderer *g_screen, const string file_path);
+	void Render(SDL_Renderer* screen, SDL_Rect* clip);
 	void Free();
 };

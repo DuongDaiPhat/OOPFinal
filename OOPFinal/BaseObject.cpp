@@ -1,4 +1,5 @@
 #include "BaseObject.h"
+#include "BaseFunction.h"
 
 BaseObject::BaseObject() {
 	objectTexture = nullptr;
@@ -19,16 +20,15 @@ SDL_Rect BaseObject::GetRect() {
 SDL_Texture* BaseObject::GetTexture() {
 	return objectTexture;
 }
-bool BaseObject::LoadImage(const string file_path) {
-	SDL_Texture* newTexture = nullptr;
+bool BaseObject::LoadImage(SDL_Renderer* g_screen, const string file_path) {
 	SDL_Surface* newSurface = IMG_Load(file_path.c_str());
 	if (newSurface == nullptr) {
 		cout << "Khong the load surface" << endl;
 		return false;
 	}
-	newTexture = SDL_CreateTextureFromSurface(g_screen, newSurface);
+	SDL_Texture* newTexture = SDL_CreateTextureFromSurface(g_screen, newSurface);
 	if (newTexture == nullptr) {
-		cout << "Khong the tai texture" << endl;
+		cout << "Khong the tai texture" << SDL_GetError()<<endl;
 		return false;
 	}
 	SDL_FreeSurface(newSurface);
