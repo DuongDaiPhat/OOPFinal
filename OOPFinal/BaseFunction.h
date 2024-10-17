@@ -15,6 +15,5 @@ static SDL_Event g_event;
 
 //Thông số cơ bản
 const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1280;
+const int SCREEN_HEIGHT = 1080;
 
-//Hàm khởi tạo

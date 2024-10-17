@@ -31,6 +31,8 @@ bool BaseObject::LoadImage(SDL_Renderer* g_screen, const string file_path) {
 		cout << "Khong the tai texture" << SDL_GetError()<<endl;
 		return false;
 	}
+	objectRect.w = newSurface->w;
+	objectRect.h = newSurface->h;
 	SDL_FreeSurface(newSurface);
 	objectTexture = newTexture;
 	return true;
@@ -41,5 +43,6 @@ void BaseObject::Render(SDL_Renderer* screen, SDL_Rect* clip) {
 }
 void BaseObject::Free() {
 	SDL_DestroyTexture(objectTexture);
+	objectTexture = NULL;
 	objectRect = { 0,0,0,0 };
 }

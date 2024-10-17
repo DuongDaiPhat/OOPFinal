@@ -27,6 +27,15 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Frence.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="House.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -39,6 +48,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frence.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="House.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
