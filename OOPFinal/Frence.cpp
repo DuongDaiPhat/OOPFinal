@@ -28,7 +28,7 @@ bool Frence::IsCollisionCheck(int x, int y, int w, int h) {
 }
 void Frence::SetBoundary() {
 	topBoundary.x = objectRect.x;
-	topBoundary.y = objectRect.y - 50;
+	topBoundary.y = objectRect.y - 30;
 	topBoundary.w = objectRect.w;
 	topBoundary.h = 1;
 	
