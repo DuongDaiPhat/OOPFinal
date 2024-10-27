@@ -6,9 +6,10 @@ protected:
 	SDL_Rect topBoundary;
 	SDL_Rect botBoundary;
 public:
+	Frence();
 	void SetVertical();
 	void SetHorizontal();
-	bool VerticalCheck();
+	bool VerticalCheck() const;
 	bool IsCollisionCheck(int x, int y, int w, int h);
 	void SetBoundary();
 };

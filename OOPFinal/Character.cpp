@@ -18,6 +18,7 @@ Character::Character() {
 	objectTexture = NULL;
 	objectRect = { 0,0,0,0 };
 	charSpeed = 5;
+	actionFrameClip = nullptr;
 }
 Character::~Character() {
 	SDL_DestroyTexture(objectTexture);
@@ -25,7 +26,7 @@ Character::~Character() {
 	delete[] actionFrameClip;
 }
 
-int Character::GetSpeed() {
+int Character::GetSpeed() const{
 	return charSpeed;
 }
 
@@ -169,10 +170,10 @@ bool Character::ShowCharacter(SDL_Renderer* screen) {
 	return true;
 }
 
-double Character::GetXVelocity() {
+double Character::GetXVelocity() const {
 	return xVelocity;
 }
-double Character::GetYVelocity() {
+double Character::GetYVelocity() const {
 	return yVelocity;
 }
 void Character::SetXVelocity(int Velocity) {

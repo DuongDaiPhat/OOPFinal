@@ -1,12 +1,17 @@
 #include "Frence.h"
 
+Frence::Frence() {
+	isVertical = false;
+	topBoundary = { 0,0,0,0 };
+	botBoundary = { 0,0,0,0 };
+}
 void Frence::SetHorizontal() {
 	isVertical = false;
 }
 void Frence::SetVertical() {
 	isVertical = true;
 }
-bool Frence::VerticalCheck() {
+bool Frence::VerticalCheck() const {
 	return isVertical;
 }
 bool Frence::IsCollisionCheck(int x, int y, int w, int h) {

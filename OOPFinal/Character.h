@@ -24,14 +24,14 @@ protected:
 public:
 	Character();
 	~Character();
-	int GetSpeed();
+	int GetSpeed() const;
 	void SetSpeed(int speed);
 	bool LoadCharacterImage(SDL_Renderer* screen, const string file_path);
 	bool ShowCharacter(SDL_Renderer* screen);
 	void HandleInput(SDL_Renderer* screen,SDL_Scancode left, SDL_Scancode up, SDL_Scancode right, SDL_Scancode down);
 	void SetClips();
-	double GetXVelocity();
-	double GetYVelocity();
+	double GetXVelocity() const;
+	double GetYVelocity() const;
 	void SetXVelocity(int Velocity);
 	void SetYVelocity(int Velocity);
 	void ResetVelocity();
