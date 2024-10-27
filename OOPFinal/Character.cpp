@@ -206,7 +206,7 @@ void Character::Move() {
 	}
 }
 SDL_Rect Character::GetRealRect() {
-	SDL_Rect realRect = { objectRect.x, objectRect.y + 30,100,175};
+	SDL_Rect realRect = { objectRect.x, objectRect.y + 50,100,175};
 	return realRect;
 }
 

@@ -4,6 +4,8 @@
 #include "House.h"
 #include "Frence.h"
 #include "Tree.h"
+#include "TrashCan.h"
+
 //init
 static bool createWindow() {
 	g_window = SDL_CreateWindow("Viu", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -84,8 +86,8 @@ static bool loadFrence(int frenceNum) {
 			return false;
 		}
 	}
-	frence[0].SetRect(730, 0, 50, 265);
-	frence[1].SetRect(730, 265, 50, 265);
+	frence[0].SetRect(730, -30, 50, 265);
+	frence[1].SetRect(730, 235, 50, 265);
 	frence[2].SetRect(1376, 64, 50, 265);
 	frence[3].SetRect(1376, 600, 50, 265);
 	return true;
@@ -137,6 +139,12 @@ static void ShowTrees(int treeNum) {
 		trees[i].Render(g_screen, nullptr);
 	}
 }
+//TrashCan
+OrgTrashCan orgTrashCan;
+RIOTrashCan rioTrashCan;
+NRIOTrashCan nrioTrashCan;
+ETrashCan eTrashCan;
+
 
 //End
 static void close() {
@@ -151,7 +159,7 @@ static void close() {
 
 int main(int argc, char* argv[]) {
 	//init
-	if (!initGame()) {
+	/*if (!initGame()) {
 		return 0;
 	}
 	if (!loadBackground()) {
@@ -173,6 +181,25 @@ int main(int argc, char* argv[]) {
 	if (!loadTrees(3)) {
 		return 0;
 	}
+	if (!orgTrashCan.LoadTrashCan(g_screen)) {
+		return 0;
+	}*/
+	if (
+		!initGame() ||
+		!loadBackground() ||
+		!loadRedHood() ||
+		!loadHouse() ||
+		!loadFrence(4) ||
+		!loadvFrence(3) ||
+		!loadTrees(3) ||
+		!orgTrashCan.LoadTrashCan(g_screen) ||
+		!rioTrashCan.LoadTrashCan(g_screen) ||
+		!nrioTrashCan.LoadTrashCan(g_screen) ||
+		!eTrashCan.LoadTrashCan(g_screen)
+		) {
+		return 0;
+	}
+	loadVFrenceBoundary(3);
 	//running loop
 	bool running = true;
 	while (running) {
@@ -188,8 +215,11 @@ int main(int argc, char* argv[]) {
 		background.Render(g_screen, nullptr);
 		house.Render(g_screen, nullptr);
 		frenceShow(4);
+		orgTrashCan.Render(g_screen, nullptr);
+		nrioTrashCan.Render(g_screen, nullptr);
 		ShowTrees(3);
 		vFrence[2].Render(g_screen, nullptr);
+		//showItem();
 		redhood.HandleInput(g_screen, SDL_SCANCODE_A, SDL_SCANCODE_W, SDL_SCANCODE_D, SDL_SCANCODE_S);
 		//Frence Block
 		for (int i = 0; i < 4; i++) {
@@ -217,7 +247,7 @@ int main(int argc, char* argv[]) {
 		}
 		//House Block
 		SDL_Rect temp = redhood.GetRealRect();
-		if (temp.x < 620 && temp.y < 395) {
+		if (temp.x < 650 && temp.y < 395) {
 			double yVelocity = redhood.GetYVelocity();
 			if (yVelocity < 0) {
 				redhood.SetYVelocity(0);
@@ -240,12 +270,15 @@ int main(int argc, char* argv[]) {
 		if (RedHoodPos.y <= 702) {
 			redhood.ShowCharacter(g_screen);
 			vFrenceShow(2);
+			rioTrashCan.Render(g_screen, nullptr);
+			eTrashCan.Render(g_screen, nullptr);
 		}
 		else {
 			vFrenceShow(2);
+			rioTrashCan.Render(g_screen, nullptr);
+			eTrashCan.Render(g_screen, nullptr);
 			redhood.ShowCharacter(g_screen);
 		}
-
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
 	}

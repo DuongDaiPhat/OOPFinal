@@ -10,8 +10,3 @@ public:
 	void setType(int type);
 	bool loadTree(SDL_Renderer* screen);
 };
-
-//class item : public BaseObject{
-//protected:
-//
-//}

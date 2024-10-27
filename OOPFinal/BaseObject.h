@@ -7,7 +7,7 @@ protected:
 	SDL_Rect objectRect;
 public:
 	BaseObject();
-	~BaseObject();
+	virtual ~BaseObject();
 	SDL_Rect GetRect();
 	void SetRect(int x, int y, int w, int h);
 	SDL_Texture* GetTexture();
