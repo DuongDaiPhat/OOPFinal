@@ -5,6 +5,7 @@
 #include "Frence.h"
 #include "Tree.h"
 #include "TrashCan.h"
+#include "HUD.h"
 
 //init
 static bool createWindow() {
@@ -19,6 +20,14 @@ static bool createRenderer() {
 	g_screen = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (g_screen == nullptr) {
 		cout << "Khoi tao man hinh that bai" << endl;
+		return false;
+	}
+	return true;
+}
+static bool createFont() {
+	g_font = TTF_OpenFont("..\\assets\\font\\Tiny5-Regular.ttf", TEXT_SIZE);
+	if (g_font == nullptr) {
+		cout << "Khoi tao font chu that bai" << endl;
 		return false;
 	}
 	return true;
@@ -42,9 +51,25 @@ static bool initGame() {
 		SDL_DestroyWindow(g_window);
 		return false;
 	}
+	if (TTF_Init() < 0 || !createFont()){
+		cout << "Khong the khoi tao font chu" << endl;
+		SDL_DestroyRenderer(g_screen);
+		SDL_DestroyWindow(g_window);
+		return false;
+	}
 	return true;
 }
-
+//End
+static void close() {
+	SDL_DestroyRenderer(g_screen);
+	g_screen = nullptr;
+	SDL_DestroyWindow(g_window);
+	g_window = nullptr;
+	TTF_CloseFont(g_font);
+	TTF_Quit();
+	IMG_Quit();
+	SDL_Quit();
+}
 //Background:
 BaseObject background;
 static bool loadBackground() {
@@ -55,6 +80,8 @@ static bool loadBackground() {
 	background.SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	return true;
 }
+//VerticalHUD
+VerticalHUD verticalHUD;
 //Character:
 Character redhood;
 static bool loadRedHood() {
@@ -109,6 +136,7 @@ static bool loadvFrence(int frenceNum) {
 	vFrence[0].SetRect(192, 790, 304, 121);
 	vFrence[1].SetRect(832, 790, 304, 121);
 	vFrence[2].SetRect(-152, 466, 304, 121);
+	return true;
 }
 static void loadVFrenceBoundary(int frenceNum) {
 	for (int i = 0; i < frenceNum; i++) {
@@ -146,47 +174,13 @@ NRIOTrashCan nrioTrashCan;
 ETrashCan eTrashCan;
 
 
-//End
-static void close() {
-	background.Free();
-	SDL_DestroyRenderer(g_screen);
-	g_screen = nullptr;
-	SDL_DestroyWindow(g_window);
-	g_window = nullptr;
-	IMG_Quit();
-	SDL_Quit();
-}
 
 int main(int argc, char* argv[]) {
-	//init
-	/*if (!initGame()) {
-		return 0;
-	}
-	if (!loadBackground()) {
-		return 0;
-	}
-	if (!loadRedHood()) {
-		return 0;
-	}
-	if (!loadHouse()) {
-		return 0;
-	}
-	if (!loadFrence(4)) {
-		return 0;
-	}
-	if (!loadvFrence(3)) {
-		return 0;
-	}
-	loadVFrenceBoundary(3);
-	if (!loadTrees(3)) {
-		return 0;
-	}
-	if (!orgTrashCan.LoadTrashCan(g_screen)) {
-		return 0;
-	}*/
+//init
 	if (
 		!initGame() ||
 		!loadBackground() ||
+		!verticalHUD.LoadHUD(g_screen) ||
 		!loadRedHood() ||
 		!loadHouse() ||
 		!loadFrence(4) ||
@@ -279,6 +273,9 @@ int main(int argc, char* argv[]) {
 			eTrashCan.Render(g_screen, nullptr);
 			redhood.ShowCharacter(g_screen);
 		}
+		//cap nhat stat
+		verticalHUD.SetSpeed(redhood.GetSpeed());
+		verticalHUD.RenderStat(g_screen, g_font);
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
 	}

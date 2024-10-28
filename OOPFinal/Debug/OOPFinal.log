@@ -1,6 +1,12 @@
-﻿  Character.cpp
+﻿  BaseFunction.cpp
+  BaseObject.cpp
+  Character.cpp
   Frence.cpp
+  HUD.cpp
+  House.cpp
+  Trash.cpp
+  TrashCan.cpp
+  Tree.cpp
   main.cpp
   Generating Code...
-D:\GameProject\OOPFinal\OOPFinal\main.cpp(112,1): warning C4715: 'loadvFrence': not all control paths return a value
   OOPFinal.vcxproj -> D:\GameProject\OOPFinal\Debug\OOPFinal.exe

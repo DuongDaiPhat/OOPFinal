@@ -14,7 +14,7 @@ BaseObject::~BaseObject() {
 void BaseObject::SetRect(int x, int y, int w, int h) {
 	objectRect = { x,y,w,h };
 }
-SDL_Rect BaseObject::GetRect() {
+SDL_Rect BaseObject::GetRect(){
 	return objectRect;
 }
 SDL_Texture* BaseObject::GetTexture() {
