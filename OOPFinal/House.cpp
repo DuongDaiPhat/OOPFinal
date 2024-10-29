@@ -1,8 +1,8 @@
 #include "House.h"
 
 House::House() {
-	objectRect.x = 128;
-	objectRect.y = 64;
-	objectRect.w = 599;
-	objectRect.h = 578;
+	objectRect.x = 0;
+	objectRect.y = 0;
+	objectRect.w = 0;
+	objectRect.h = 0;
 }

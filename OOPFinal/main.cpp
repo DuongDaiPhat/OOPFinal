@@ -2,7 +2,7 @@
 #include "BaseObject.h"
 #include "Character.h"
 #include "House.h"
-#include "Frence.h"
+#include "Fence.h"
 #include "Tree.h"
 #include "TrashCan.h"
 #include "HUD.h"
@@ -99,53 +99,45 @@ static bool loadHouse() {
 		cout << "Khong the tai anh nha" << endl;
 		return false;
 	}
-	house.SetRect(128, 20, 599, 575);
 	return true;
 }
-//frence
-Frence frence[4];
-Frence vFrence[3];
-//Horizontal Frence
-static bool loadFrence(int frenceNum) {
-	for (int i = 0; i < frenceNum; i++) {
-		if (!frence[i].LoadImage(g_screen, "..\\assets\\other\\FrenceHorizontal.png")) {
+//Fence
+Fence fence[4];
+Fence vFence[3];
+//Horizontal Fence
+static bool loadFence(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		if (!fence[i].LoadImage(g_screen, "..\\assets\\other\\FenceHorizontal.png")) {
 			cout << "Khong the tai anh hang rao thu" << i << endl;
 			return false;
 		}
 	}
-	frence[0].SetRect(730, -30, 50, 265);
-	frence[1].SetRect(730, 235, 50, 265);
-	frence[2].SetRect(1376, 64, 50, 265);
-	frence[3].SetRect(1376, 600, 50, 265);
 	return true;
 }
-static void frenceShow(int frenceNum) {
-	for (int i = 0; i < frenceNum; i++) {
-		frence[i].Render(g_screen, nullptr);
+static void FenceShow(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		fence[i].Render(g_screen, nullptr);
 	}
 }
-//vertical Frence
-static bool loadvFrence(int frenceNum) {
-	for (int i = 0; i < frenceNum; i++) {
-		if (!vFrence[i].LoadImage(g_screen, "..\\assets\\other\\FrenceVertical.png")) {
+//vertical Fence
+static bool loadvFence(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		if (!vFence[i].LoadImage(g_screen, "..\\assets\\other\\FenceVertical.png")) {
 			cout << "Khong the tai anh hang rao ngang thu" << i << endl;
 			return false;
 		}
-		vFrence[i].SetVertical();
+		vFence[i].SetVertical();
 	}
-	vFrence[0].SetRect(192, 790, 304, 121);
-	vFrence[1].SetRect(832, 790, 304, 121);
-	vFrence[2].SetRect(-152, 466, 304, 121);
 	return true;
 }
-static void loadVFrenceBoundary(int frenceNum) {
-	for (int i = 0; i < frenceNum; i++) {
-		vFrence[i].SetBoundary();
+static void loadVFenceBoundary(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		vFence[i].SetBoundary();
 	}
 }
-static void vFrenceShow(int frenceNum) {
-	for (int i = 0; i < frenceNum; i++) {
-		vFrence[i].Render(g_screen, nullptr);
+static void vFenceShow(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		vFence[i].Render(g_screen, nullptr);
 	}
 }
 //Tree
@@ -157,9 +149,6 @@ static bool loadTrees(int treeNum) {
 			return false;
 		}
 	}
-	trees[0].SetRect(1690, 32, 256, 256);
-	trees[1].SetRect(1690, 312, 256, 256);
-	trees[2].SetRect(1690, 596, 230, 380);
 	return true;
 }
 static void ShowTrees(int treeNum) {
@@ -183,8 +172,8 @@ int main(int argc, char* argv[]) {
 		!verticalHUD.LoadHUD(g_screen) ||
 		!loadRedHood() ||
 		!loadHouse() ||
-		!loadFrence(4) ||
-		!loadvFrence(3) ||
+		!loadFence(4) ||
+		!loadvFence(3) ||
 		!loadTrees(3) ||
 		!orgTrashCan.LoadTrashCan(g_screen) ||
 		!rioTrashCan.LoadTrashCan(g_screen) ||
@@ -193,8 +182,20 @@ int main(int argc, char* argv[]) {
 		) {
 		return 0;
 	}
-	loadVFrenceBoundary(3);
-	//running loop
+//Set Up
+	house.SetRect(HOUSE_POS_X, HOUSE_POS_Y, HOUSE_WIDTH, HOUSE_HEIGHT);
+	fence[0].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE1_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	fence[1].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE2_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	fence[2].SetRect(FENCE_NEAR_TREE_POS_X, FENCE1_NEAR_TREE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	fence[3].SetRect(FENCE_NEAR_TREE_POS_X, FENCE2_NEAR_TREE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	vFence[0].SetRect(VFENCE1_BELLOW_POS_X, VFENCE_BELLOW_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
+	vFence[1].SetRect(VFENCE2_BELLOW_POS_X, VFENCE_BELLOW_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
+	vFence[2].SetRect(VFENCE_NEAR_HOUSE_POS_X, VFENCE_NEAR_HOUSE_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
+	loadVFenceBoundary(3);
+	trees[0].SetRect(TOP_TREE_POS_X, TOP_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
+	trees[1].SetRect(MIDDLE_TREE_POS_X, MIDDLE_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
+	trees[2].SetRect(BOTTOM_TREE_POS_X, BOTTOM_TREE_POS_Y, LONG_TREE_WIDTH, LONG_TREE_HEIGHT);
+//running loop
 	bool running = true;
 	while (running) {
 		SDL_PollEvent(&g_event);
@@ -208,34 +209,33 @@ int main(int argc, char* argv[]) {
 		SDL_RenderClear(g_screen);
 		background.Render(g_screen, nullptr);
 		house.Render(g_screen, nullptr);
-		frenceShow(4);
+		FenceShow(4);
 		orgTrashCan.Render(g_screen, nullptr);
 		nrioTrashCan.Render(g_screen, nullptr);
 		ShowTrees(3);
-		vFrence[2].Render(g_screen, nullptr);
-		//showItem();
+		vFence[2].Render(g_screen, nullptr);
 		redhood.HandleInput(g_screen, SDL_SCANCODE_A, SDL_SCANCODE_W, SDL_SCANCODE_D, SDL_SCANCODE_S);
-		//Frence Block
+		//Fence Block
 		for (int i = 0; i < 4; i++) {
 			SDL_Rect temp = redhood.GetRealRect();
 			int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
 			int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
-			if (redhood.CheckCollision(newX, temp.y, temp.w, temp.h, frence[i].GetRect())) {
+			if (redhood.CheckCollision(newX, temp.y, temp.w, temp.h, fence[i].GetRect())) {
 				redhood.SetXVelocity(0);
 			}
-			if (redhood.CheckCollision(temp.x, newY, temp.w, temp.h, frence[i].GetRect())) {
+			if (redhood.CheckCollision(temp.x, newY, temp.w, temp.h, fence[i].GetRect())) {
 				redhood.SetYVelocity(0);
 			}
 		}
-		//VfrenceBlock
+		//VFenceBlock
 		for (int i = 0; i < 3; i++) {
 			SDL_Rect temp = redhood.GetRealRect();
 			int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
 			int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
-			if (vFrence[i].IsCollisionCheck(newX, temp.y, temp.w, temp.h)) {
+			if (vFence[i].IsCollisionCheck(newX, temp.y, temp.w, temp.h)) {
 				redhood.SetXVelocity(0);
 			}
-			if (vFrence[i].IsCollisionCheck(temp.x, newY, temp.w, temp.h)) {
+			if (vFence[i].IsCollisionCheck(temp.x, newY, temp.w, temp.h)) {
 				redhood.SetYVelocity(0);
 			}
 		}
@@ -263,12 +263,12 @@ int main(int argc, char* argv[]) {
 		SDL_Rect RedHoodPos = redhood.GetRect();
 		if (RedHoodPos.y <= 702) {
 			redhood.ShowCharacter(g_screen);
-			vFrenceShow(2);
+			vFenceShow(2);
 			rioTrashCan.Render(g_screen, nullptr);
 			eTrashCan.Render(g_screen, nullptr);
 		}
 		else {
-			vFrenceShow(2);
+			vFenceShow(2);
 			rioTrashCan.Render(g_screen, nullptr);
 			eTrashCan.Render(g_screen, nullptr);
 			redhood.ShowCharacter(g_screen);

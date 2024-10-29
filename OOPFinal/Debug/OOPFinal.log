@@ -1,12 +1,2 @@
-﻿  BaseFunction.cpp
-  BaseObject.cpp
-  Character.cpp
-  Frence.cpp
-  HUD.cpp
-  House.cpp
-  Trash.cpp
-  TrashCan.cpp
-  Tree.cpp
-  main.cpp
-  Generating Code...
+﻿  main.cpp
   OOPFinal.vcxproj -> D:\GameProject\OOPFinal\Debug\OOPFinal.exe
