@@ -83,6 +83,8 @@ static bool loadBackground() {
 }
 //VerticalHUD
 VerticalHUD verticalHUD;
+//InventoryBar
+InventoryBar inventoryBar;
 //Character:
 Character redhood;
 static bool loadRedHood() {
@@ -163,68 +165,95 @@ RIOTrashCan rioTrashCan;
 NRIOTrashCan nrioTrashCan;
 ETrashCan eTrashCan;
 //Trash
-Trash bananaPeel(TrashType::Organic, TrashSpecificType::BananaPeel);
-Trash appleCore(TrashType::Organic, TrashSpecificType::AppleCore);
-Trash bigStick(TrashType::Organic, TrashSpecificType::BigStick);
-Trash smallStick(TrashType::Organic, TrashSpecificType::SmallStick);
-Trash redApple(TrashType::Organic, TrashSpecificType::RedApple);
-Trash purpleApple(TrashType::Organic, TrashSpecificType::PurpleApple);
-Trash can(TrashType::Reclyable, TrashSpecificType::Can);
-Trash glassBottle(TrashType::Reclyable, TrashSpecificType::GlassBottle);
-Trash papperBag(TrashType::Reclyable, TrashSpecificType::PapperBag);
-Trash rubberDuck(TrashType::Reclyable, TrashSpecificType::RubberDuck);
-Trash rubberGloves(TrashType::Reclyable, TrashSpecificType::RubberGloves);
-Trash waterBottle(TrashType::Reclyable, TrashSpecificType::WaterBottle);
-Trash houseHoldTrash(TrashType::NonReclyable, TrashSpecificType::HouseHoldTrash);
-Trash insectSpray(TrashType::NonReclyable, TrashSpecificType::InsectSpray);
-Trash plasticBag(TrashType::NonReclyable, TrashSpecificType::PlasticBag);
-Trash sponge(TrashType::NonReclyable, TrashSpecificType::Sponge);
-Trash battery(TrashType::Electronic, TrashSpecificType::Battery);
-Trash electricCircuit(TrashType::Electronic, TrashSpecificType::ElectricCircuit);
-Trash electricWire(TrashType::Electronic, TrashSpecificType::ElectricWire);
-Trash lightBulb(TrashType::Electronic, TrashSpecificType::LightBulb);
+Trash bananaPeel[2];
+Trash appleCore[2];
+Trash bigStick[2];
+Trash smallStick[2];
+Trash redApple[2];
+Trash purpleApple[2];
+Trash can[2];
+Trash glassBottle[2];
+Trash papperBag[2];
+Trash rubberDuck[2];
+Trash rubberGloves[2];
+Trash waterBottle[2];
+Trash houseHoldTrash[2];
+Trash insectSpray[2];
+Trash plasticBag[2];
+Trash sponge[2];
+Trash battery[2];
+Trash electricCircuit[2];
+Trash electricWire[2];
+Trash lightBulb[2];
+
 bool static LoadAllTrash() {
-	bananaPeel.LoadTrash(g_screen);
-	appleCore.LoadTrash(g_screen);
-	bigStick.LoadTrash(g_screen);
-	smallStick.LoadTrash(g_screen);
-	redApple.LoadTrash(g_screen);
-	can.LoadTrash(g_screen);
-	glassBottle.LoadTrash(g_screen);
-	papperBag.LoadTrash(g_screen);
-	rubberDuck.LoadTrash(g_screen);
-	rubberGloves.LoadTrash(g_screen);
-	waterBottle.LoadTrash(g_screen);
-	houseHoldTrash.LoadTrash(g_screen);
-	insectSpray.LoadTrash(g_screen);
-	plasticBag.LoadTrash(g_screen);
-	sponge.LoadTrash(g_screen);
-	battery.LoadTrash(g_screen);
-	electricCircuit.LoadTrash(g_screen);
-	electricWire.LoadTrash(g_screen);
-	lightBulb.LoadTrash(g_screen);
+	for (int i = 0; i < TRASH_QUANTITIES; i++) {
+		bananaPeel[i] = Trash(TrashType::Organic, TrashSpecificType::BananaPeel);
+		appleCore[i] = Trash(TrashType::Organic, TrashSpecificType::AppleCore);
+		bigStick[i] = Trash(TrashType::Organic, TrashSpecificType::BigStick);
+		smallStick[i] = Trash(TrashType::Organic, TrashSpecificType::SmallStick);
+		redApple[i] = Trash(TrashType::Organic, TrashSpecificType::RedApple);
+		purpleApple[i] = Trash(TrashType::Organic, TrashSpecificType::PurpleApple);
+		can[i] = Trash(TrashType::Reclyable, TrashSpecificType::Can);
+		glassBottle[i] = Trash(TrashType::Reclyable, TrashSpecificType::GlassBottle);
+		papperBag[i] = Trash(TrashType::Reclyable, TrashSpecificType::PapperBag);
+		rubberDuck[i] = Trash(TrashType::Reclyable, TrashSpecificType::RubberDuck);
+		rubberGloves[i] = Trash(TrashType::Reclyable, TrashSpecificType::RubberGloves);
+		waterBottle[i] = Trash(TrashType::Reclyable, TrashSpecificType::WaterBottle);
+		houseHoldTrash[i] = Trash(TrashType::NonReclyable, TrashSpecificType::HouseHoldTrash);
+		insectSpray[i] = Trash(TrashType::NonReclyable, TrashSpecificType::InsectSpray);
+		plasticBag[i] = Trash(TrashType::NonReclyable, TrashSpecificType::PlasticBag);
+		sponge[i] = Trash(TrashType::NonReclyable, TrashSpecificType::Sponge);
+		battery[i] = Trash(TrashType::Electronic, TrashSpecificType::Battery);
+		electricCircuit[i] = Trash(TrashType::Electronic, TrashSpecificType::ElectricCircuit);
+		electricWire[i] = Trash(TrashType::Electronic, TrashSpecificType::ElectricWire);
+		lightBulb[i] = Trash(TrashType::Electronic, TrashSpecificType::LightBulb);
+		if (!bananaPeel[i].LoadTrash(g_screen) ||
+			!appleCore[i].LoadTrash(g_screen) ||
+			!bigStick[i].LoadTrash(g_screen) ||
+			!smallStick[i].LoadTrash(g_screen) ||
+			!redApple[i].LoadTrash(g_screen) ||
+			!can[i].LoadTrash(g_screen) ||
+			!glassBottle[i].LoadTrash(g_screen) ||
+			!papperBag[i].LoadTrash(g_screen) ||
+			!rubberDuck[i].LoadTrash(g_screen) ||
+			!rubberGloves[i].LoadTrash(g_screen) ||
+			!waterBottle[i].LoadTrash(g_screen) ||
+			!houseHoldTrash[i].LoadTrash(g_screen) ||
+			!insectSpray[i].LoadTrash(g_screen) ||
+			!plasticBag[i].LoadTrash(g_screen) ||
+			!sponge[i].LoadTrash(g_screen) ||
+			!battery[i].LoadTrash(g_screen) ||
+			!electricCircuit[i].LoadTrash(g_screen) ||
+			!electricWire[i].LoadTrash(g_screen) ||
+			!lightBulb[i].LoadTrash(g_screen) ) {
+			return false;
+		}
+	}
 	return true;
 }
 void static ShowTrash() {
-	bananaPeel.Render(g_screen, nullptr);
-	appleCore.Render(g_screen, nullptr);
-	bigStick.Render(g_screen, nullptr);
-	smallStick.Render(g_screen, nullptr);
-	redApple.Render(g_screen, nullptr);
-	can.Render(g_screen, nullptr);
-	glassBottle.Render(g_screen, nullptr);
-	papperBag.Render(g_screen, nullptr);
-	rubberDuck.Render(g_screen, nullptr);
-	rubberGloves.Render(g_screen, nullptr);
-	waterBottle.Render(g_screen, nullptr);
-	houseHoldTrash.Render(g_screen, nullptr);
-	insectSpray.Render(g_screen, nullptr);
-	plasticBag.Render(g_screen, nullptr);
-	sponge.Render(g_screen, nullptr);
-	battery.Render(g_screen, nullptr);
-	electricCircuit.Render(g_screen, nullptr);
-	electricWire.Render(g_screen, nullptr);
-	lightBulb.Render(g_screen, nullptr);
+	for (int i = 0; i < TRASH_QUANTITIES; i++) {
+		bananaPeel[i].Render(g_screen, nullptr);
+		appleCore[i].Render(g_screen, nullptr);
+		bigStick[i].Render(g_screen, nullptr);
+		smallStick[i].Render(g_screen, nullptr);
+		redApple[i].Render(g_screen, nullptr);
+		can[i].Render(g_screen, nullptr);
+		glassBottle[i].Render(g_screen, nullptr);
+		papperBag[i].Render(g_screen, nullptr);
+		rubberDuck[i].Render(g_screen, nullptr);
+		rubberGloves[i].Render(g_screen, nullptr);
+		waterBottle[i].Render(g_screen, nullptr);
+		houseHoldTrash[i].Render(g_screen, nullptr);
+		insectSpray[i].Render(g_screen, nullptr);
+		plasticBag[i].Render(g_screen, nullptr);
+		sponge[i].Render(g_screen, nullptr);
+		battery[i].Render(g_screen, nullptr);
+		electricCircuit[i].Render(g_screen, nullptr);
+		electricWire[i].Render(g_screen, nullptr);
+		lightBulb[i].Render(g_screen, nullptr);
+	}
 }
 /*
 BananaPeel, AppleCore, BigStick, SmallStick, RedApple, PurpleApple,
@@ -252,7 +281,8 @@ int main(int argc, char* argv[]) {
 		!rioTrashCan.LoadTrashCan(g_screen) ||
 		!nrioTrashCan.LoadTrashCan(g_screen) ||
 		!eTrashCan.LoadTrashCan(g_screen) ||
-		!LoadAllTrash()
+		!LoadAllTrash() ||
+		!inventoryBar.LoadInventoryBar(g_screen)
 		) {
 		return 0;
 	}
@@ -354,11 +384,11 @@ int main(int argc, char* argv[]) {
 			redhood.ShowCharacter(g_screen);
 		}
 		//cap nhat stat
+		inventoryBar.InventoryBarRender(g_screen);
 		verticalHUD.SetSpeed(redhood.GetSpeed());
 		verticalHUD.RenderStat(g_screen, g_font);
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
-		SDL_Rect test = bananaPeel.GetRect();
 	}
 	close();
 	return 0;

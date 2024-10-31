@@ -16,3 +16,10 @@ public:
 	bool LoadHUD(SDL_Renderer* screen);
 	bool RenderStat(SDL_Renderer* screen, TTF_Font* font);
 };
+class InventoryBar :public BaseObject {
+private:
+	BaseObject baloIcon;
+public:
+	bool LoadInventoryBar(SDL_Renderer* screen);
+	void InventoryBarRender(SDL_Renderer* screen);
+};

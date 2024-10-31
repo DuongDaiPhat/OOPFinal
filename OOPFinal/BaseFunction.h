@@ -35,6 +35,16 @@ const int VERTICAL_HUD_POS_X = 0;
 const int VERTICAL_HUD_POS_Y = 0;
 const int VERTICAL_HUD_WEIGHT = 480;
 const int VERTICAL_HUD_HEIGHT = 120;
+//kich thuoc Inventory Bar
+const int INVENTORYBAR_POSX = 0;
+const int INVENTORYBAR_POSY = 120;
+const int INVENTORYBAR_WIDTH = 100;
+const int INVENTORYBAR_HEIGHT = 320;
+//kich thuoc balo icon
+const int BALOICON_POSX = 25;
+const int BALOICON_POSY = 140;
+const int BALOICON_WIDTH = 60;
+const int BALOICON_HEIGHT = 60;
 //Kích thước thùng rác
 const int TRASH_CAN_WIDTH = 130;
 const int TRASH_CAN_HEIGHT = 160;
@@ -80,3 +90,5 @@ const int MIDDLE_TREE_POS_X = 1690;
 const int MIDDLE_TREE_POS_Y = 312;
 const int BOTTOM_TREE_POS_X = 1690;
 const int BOTTOM_TREE_POS_Y = 596;
+//So luong rac tren moi loai rac
+const int TRASH_QUANTITIES = 2;

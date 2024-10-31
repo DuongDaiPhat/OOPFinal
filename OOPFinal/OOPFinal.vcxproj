@@ -137,9 +137,6 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Fence.cpp" />
     <ClCompile Include="House.cpp" />
-    <ClCompile Include="Item.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Trash.cpp" />
@@ -158,9 +155,6 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Fence.h" />
     <ClInclude Include="House.h" />
-    <ClInclude Include="Item.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Trash.h" />
     <ClInclude Include="TrashCan.h">

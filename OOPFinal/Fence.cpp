@@ -18,14 +18,12 @@ bool Fence::IsCollisionCheck(int x, int y, int w, int h) {
 	SDL_Rect characterRect = { x,y,w,h };
 	if (!isVertical) {
 		if (SDL_HasIntersection(&objectRect, &characterRect)) {
-
 			return true;
 		}
 		return false;
 	}
 	else {
 		if (SDL_HasIntersection(&topBoundary, &characterRect) && SDL_HasIntersection(&botBoundary, &characterRect)) {
-			cout << "Dung " << endl;
 			return true;
 		}
 		return false;

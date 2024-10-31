@@ -9,7 +9,9 @@ VerticalHUD::VerticalHUD() {
 }
 VerticalHUD::~VerticalHUD() {
 	point = speed = 0;
+	SDL_DestroyTexture(speedTextTexture);
 	speedTextTexture = nullptr;
+	SDL_DestroyTexture(pointTextTexture);
 	pointTextTexture = nullptr;
 }
 void VerticalHUD::SetPoint(const int& CharPoint){
@@ -60,4 +62,22 @@ bool VerticalHUD::RenderStat(SDL_Renderer* screen, TTF_Font *font) {
 	SDL_RenderCopy(screen, pointTextTexture, nullptr, &pointRenderQuad);
 	SDL_RenderCopy(screen, speedTextTexture, nullptr, &speedRenderQuad);
 	return true;
+}
+
+bool InventoryBar::LoadInventoryBar(SDL_Renderer* screen) {
+	if (!this->LoadImage(screen, "..\\assets\\HUD\\inventory.png")) {
+		cout << "Khong the load thanh luu tru " << endl;
+		return false;
+	}
+	this->SetRect(INVENTORYBAR_POSX, INVENTORYBAR_POSY, INVENTORYBAR_WIDTH, INVENTORYBAR_HEIGHT);
+	if (!this->baloIcon.LoadImage(screen, "..\\assets\\HUD\\Balo.png")) {
+		cout << "Khong the load Balo icon" << endl;
+		return false;
+	}
+	this->baloIcon.SetRect(BALOICON_POSX, BALOICON_POSY, BALOICON_WIDTH, BALOICON_HEIGHT);
+	return true;
+}
+void InventoryBar::InventoryBarRender(SDL_Renderer* screen) {
+	this->Render(screen, nullptr);
+	this->baloIcon.Render(screen, nullptr);
 }

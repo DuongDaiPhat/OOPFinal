@@ -79,7 +79,7 @@ bool Item::LoadItem(SDL_Renderer *screen) {
 	std::random_device rd;  // Sử dụng thiết bị ngẫu nhiên để tạo seed
 	std::mt19937 gen(rd()); // Sử dụng Mersenne Twister làm bộ sinh số ngẫu nhiên
 	std::uniform_int_distribution<> disX(1360, 1664);  // Tạo phân phối số nguyên trong khoảng [1, 1664]
-	
+
 	int xPos = disX(gen);
 	int yPos;
 	if (xPos < 1272) {
