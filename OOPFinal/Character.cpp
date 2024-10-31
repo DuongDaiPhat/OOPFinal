@@ -156,13 +156,13 @@ bool Character::ShowCharacter(SDL_Renderer* screen) {
 	SDL_Rect renderQuad = { objectRect.x, objectRect.y, 125, 200};
 	if (inputType.goRight == 1) {
 		SDL_RenderCopy(screen, objectTexture, currentClip, &renderQuad);
-		cout << "objectRect: x=" << objectRect.x << ", y=" << objectRect.y << ", w=" << objectRect.w << ", h=" << objectRect.h << endl;
-		cout << "currentClip x=" << currentClip->x << ", y = " << currentClip->y << ", w = " << currentClip->w << ", h = " << currentClip->h << endl;
+		/*cout << "objectRect: x=" << objectRect.x << ", y=" << objectRect.y << ", w=" << objectRect.w << ", h=" << objectRect.h << endl;
+		cout << "currentClip x=" << currentClip->x << ", y = " << currentClip->y << ", w = " << currentClip->w << ", h = " << currentClip->h << endl;*/
 	}
 	else if (inputType.goLeft == 1) {
 		SDL_RenderCopyEx(screen, objectTexture, currentClip, &renderQuad,0,NULL,SDL_FLIP_HORIZONTAL);
-		cout << "objectRect: x=" << objectRect.x << ", y=" << objectRect.y << ", w=" << objectRect.w << ", h=" << objectRect.h << endl;
-		cout << "currentClip x=" << currentClip->x << ", y = " << currentClip->y << ", w = " << currentClip->w << ", h = " << currentClip->h << endl;
+		/*cout << "objectRect: x=" << objectRect.x << ", y=" << objectRect.y << ", w=" << objectRect.w << ", h=" << objectRect.h << endl;
+		cout << "currentClip x=" << currentClip->x << ", y = " << currentClip->y << ", w = " << currentClip->w << ", h = " << currentClip->h << endl;*/
 	}
 	else {
 		SDL_RenderCopy(screen, objectTexture, currentClip, &renderQuad);

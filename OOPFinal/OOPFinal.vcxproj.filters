@@ -27,7 +27,7 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Frence.cpp">
+    <ClCompile Include="Fence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="House.cpp">
@@ -40,6 +40,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TrashCan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,7 +62,7 @@
     <ClInclude Include="Character.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Frence.h">
+    <ClInclude Include="Fence.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="House.h">
@@ -69,6 +75,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="TrashCan.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trash.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

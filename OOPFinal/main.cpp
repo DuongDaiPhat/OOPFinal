@@ -6,6 +6,7 @@
 #include "Tree.h"
 #include "TrashCan.h"
 #include "HUD.h"
+#include "Trash.h";
 
 //init
 static bool createWindow() {
@@ -161,9 +162,81 @@ OrgTrashCan orgTrashCan;
 RIOTrashCan rioTrashCan;
 NRIOTrashCan nrioTrashCan;
 ETrashCan eTrashCan;
-
-
-
+//Trash
+Trash bananaPeel(TrashType::Organic, TrashSpecificType::BananaPeel);
+Trash appleCore(TrashType::Organic, TrashSpecificType::AppleCore);
+Trash bigStick(TrashType::Organic, TrashSpecificType::BigStick);
+Trash smallStick(TrashType::Organic, TrashSpecificType::SmallStick);
+Trash redApple(TrashType::Organic, TrashSpecificType::RedApple);
+Trash purpleApple(TrashType::Organic, TrashSpecificType::PurpleApple);
+Trash can(TrashType::Reclyable, TrashSpecificType::Can);
+Trash glassBottle(TrashType::Reclyable, TrashSpecificType::GlassBottle);
+Trash papperBag(TrashType::Reclyable, TrashSpecificType::PapperBag);
+Trash rubberDuck(TrashType::Reclyable, TrashSpecificType::RubberDuck);
+Trash rubberGloves(TrashType::Reclyable, TrashSpecificType::RubberGloves);
+Trash waterBottle(TrashType::Reclyable, TrashSpecificType::WaterBottle);
+Trash houseHoldTrash(TrashType::NonReclyable, TrashSpecificType::HouseHoldTrash);
+Trash insectSpray(TrashType::NonReclyable, TrashSpecificType::InsectSpray);
+Trash plasticBag(TrashType::NonReclyable, TrashSpecificType::PlasticBag);
+Trash sponge(TrashType::NonReclyable, TrashSpecificType::Sponge);
+Trash battery(TrashType::Electronic, TrashSpecificType::Battery);
+Trash electricCircuit(TrashType::Electronic, TrashSpecificType::ElectricCircuit);
+Trash electricWire(TrashType::Electronic, TrashSpecificType::ElectricWire);
+Trash lightBulb(TrashType::Electronic, TrashSpecificType::LightBulb);
+bool static LoadAllTrash() {
+	bananaPeel.LoadTrash(g_screen);
+	appleCore.LoadTrash(g_screen);
+	bigStick.LoadTrash(g_screen);
+	smallStick.LoadTrash(g_screen);
+	redApple.LoadTrash(g_screen);
+	can.LoadTrash(g_screen);
+	glassBottle.LoadTrash(g_screen);
+	papperBag.LoadTrash(g_screen);
+	rubberDuck.LoadTrash(g_screen);
+	rubberGloves.LoadTrash(g_screen);
+	waterBottle.LoadTrash(g_screen);
+	houseHoldTrash.LoadTrash(g_screen);
+	insectSpray.LoadTrash(g_screen);
+	plasticBag.LoadTrash(g_screen);
+	sponge.LoadTrash(g_screen);
+	battery.LoadTrash(g_screen);
+	electricCircuit.LoadTrash(g_screen);
+	electricWire.LoadTrash(g_screen);
+	lightBulb.LoadTrash(g_screen);
+	return true;
+}
+void static ShowTrash() {
+	bananaPeel.Render(g_screen, nullptr);
+	appleCore.Render(g_screen, nullptr);
+	bigStick.Render(g_screen, nullptr);
+	smallStick.Render(g_screen, nullptr);
+	redApple.Render(g_screen, nullptr);
+	can.Render(g_screen, nullptr);
+	glassBottle.Render(g_screen, nullptr);
+	papperBag.Render(g_screen, nullptr);
+	rubberDuck.Render(g_screen, nullptr);
+	rubberGloves.Render(g_screen, nullptr);
+	waterBottle.Render(g_screen, nullptr);
+	houseHoldTrash.Render(g_screen, nullptr);
+	insectSpray.Render(g_screen, nullptr);
+	plasticBag.Render(g_screen, nullptr);
+	sponge.Render(g_screen, nullptr);
+	battery.Render(g_screen, nullptr);
+	electricCircuit.Render(g_screen, nullptr);
+	electricWire.Render(g_screen, nullptr);
+	lightBulb.Render(g_screen, nullptr);
+}
+/*
+BananaPeel, AppleCore, BigStick, SmallStick, RedApple, PurpleApple,
+	Can, GlassBottle, PapperBag, RubberDuck, RubberGloves,WaterBottle,
+	HouseHoldTrash, InsectSpray, PlasticBag, Sponge,
+	Battery, ElectricCircuit, ElectricWire, LightBulb*/
+BaseObject horizontal;
+BaseObject vertical;
+static void RulerShow() {
+	vertical.Render(g_screen, nullptr);
+	horizontal.Render(g_screen, nullptr);
+}
 int main(int argc, char* argv[]) {
 //init
 	if (
@@ -178,7 +251,8 @@ int main(int argc, char* argv[]) {
 		!orgTrashCan.LoadTrashCan(g_screen) ||
 		!rioTrashCan.LoadTrashCan(g_screen) ||
 		!nrioTrashCan.LoadTrashCan(g_screen) ||
-		!eTrashCan.LoadTrashCan(g_screen)
+		!eTrashCan.LoadTrashCan(g_screen) ||
+		!LoadAllTrash()
 		) {
 		return 0;
 	}
@@ -195,6 +269,10 @@ int main(int argc, char* argv[]) {
 	trees[0].SetRect(TOP_TREE_POS_X, TOP_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
 	trees[1].SetRect(MIDDLE_TREE_POS_X, MIDDLE_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
 	trees[2].SetRect(BOTTOM_TREE_POS_X, BOTTOM_TREE_POS_Y, LONG_TREE_WIDTH, LONG_TREE_HEIGHT);
+	//test
+	horizontal.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\horizontal.png");
+	vertical.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\vertical.png");
+
 //running loop
 	bool running = true;
 	while (running) {
@@ -262,12 +340,14 @@ int main(int argc, char* argv[]) {
 		redhood.Move();
 		SDL_Rect RedHoodPos = redhood.GetRect();
 		if (RedHoodPos.y <= 702) {
+			ShowTrash();
 			redhood.ShowCharacter(g_screen);
 			vFenceShow(2);
 			rioTrashCan.Render(g_screen, nullptr);
 			eTrashCan.Render(g_screen, nullptr);
 		}
 		else {
+			ShowTrash();
 			vFenceShow(2);
 			rioTrashCan.Render(g_screen, nullptr);
 			eTrashCan.Render(g_screen, nullptr);
@@ -278,6 +358,7 @@ int main(int argc, char* argv[]) {
 		verticalHUD.RenderStat(g_screen, g_font);
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
+		SDL_Rect test = bananaPeel.GetRect();
 	}
 	close();
 	return 0;

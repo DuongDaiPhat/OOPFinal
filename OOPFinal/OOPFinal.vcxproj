@@ -135,12 +135,14 @@
     <ClCompile Include="BaseFunction.cpp" />
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Frence.cpp" />
+    <ClCompile Include="Fence.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="Item.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Trash.cpp" />
     <ClCompile Include="TrashCan.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
@@ -154,11 +156,13 @@
     <ClInclude Include="BaseFunction.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="Frence.h" />
+    <ClInclude Include="Fence.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Item.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="Trash.h" />
     <ClInclude Include="TrashCan.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
