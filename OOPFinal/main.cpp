@@ -7,6 +7,7 @@
 #include "TrashCan.h"
 #include "HUD.h"
 #include "Trash.h";
+#include "MapGrid.h"
 
 //init
 static bool createWindow() {
@@ -164,6 +165,49 @@ OrgTrashCan orgTrashCan;
 RIOTrashCan rioTrashCan;
 NRIOTrashCan nrioTrashCan;
 ETrashCan eTrashCan;
+//MapGrid
+MapGrid mapGrid[6];
+static void LoadMapGrid() {
+	for (int i = 0; i < 6; i++) {
+		mapGrid[i] = MapGrid(GRID_SIZE[i]);
+	}
+}
+int CheckGridTrashIn(Trash* trash) {
+	SDL_Rect trashRect = trash->GetRect();
+	if ((GRID1_SIZE.x <= trashRect.x && trashRect.x <= GRID1_SIZE.x + GRID1_SIZE.w) && (GRID1_SIZE.y <= trashRect.y && trashRect.y <= GRID1_SIZE.y + GRID1_SIZE.h)) {
+		return 0;
+	}
+	else if ((GRID2_SIZE.x <= trashRect.x && trashRect.x <= GRID2_SIZE.x + GRID2_SIZE.w) && (GRID2_SIZE.y <= trashRect.y && trashRect.y <= GRID2_SIZE.y + GRID2_SIZE.h)) {
+		return 1;
+	}
+	else if ((GRID3_SIZE.x <= trashRect.x && trashRect.x <= GRID3_SIZE.x + GRID3_SIZE.w) && (GRID3_SIZE.y <= trashRect.y && trashRect.y <= GRID3_SIZE.y + GRID3_SIZE.h)) {
+		return 2;
+	}
+	else if ((GRID4_SIZE.x <= trashRect.x && trashRect.x <= GRID4_SIZE.x + GRID4_SIZE.w) && (GRID4_SIZE.y <= trashRect.y && trashRect.y <= GRID4_SIZE.y + GRID4_SIZE.h)) {
+		return 3;
+	}
+	else if ((GRID5_SIZE.x <= trashRect.x && trashRect.x <= GRID5_SIZE.x + GRID5_SIZE.w) && (GRID5_SIZE.y <= trashRect.y && trashRect.y <= GRID5_SIZE.y + GRID5_SIZE.h)) {
+		return 4;
+	}
+	else if ((GRID6_SIZE.x <= trashRect.x && trashRect.x <= GRID6_SIZE.x + GRID6_SIZE.w) && (GRID6_SIZE.y <= trashRect.y && trashRect.y <= GRID6_SIZE.y + GRID6_SIZE.h)) {
+		return 5;
+	}
+	return -1;
+}
+void AddTrashToGrid(Trash* trash, int gridNumber) {
+	if (gridNumber < 0 || gridNumber >= 6) {
+		cout << "Gia tri khong hop le" << endl;
+	}
+	else {
+		mapGrid[gridNumber].addTrashToMapGrid(trash);
+	}
+}
+
+void ShowTrashInAllGrid() {
+	for (int i = 0; i < 6; i++) {
+		mapGrid[i].showTrashInGrid(g_screen);
+	}
+}
 //Trash
 Trash bananaPeel[2];
 Trash appleCore[2];
@@ -187,6 +231,7 @@ Trash electricWire[2];
 Trash lightBulb[2];
 
 bool static LoadAllTrash() {
+	int grid_index;
 	for (int i = 0; i < TRASH_QUANTITIES; i++) {
 		bananaPeel[i] = Trash(TrashType::Organic, TrashSpecificType::BananaPeel);
 		appleCore[i] = Trash(TrashType::Organic, TrashSpecificType::AppleCore);
@@ -208,58 +253,149 @@ bool static LoadAllTrash() {
 		electricCircuit[i] = Trash(TrashType::Electronic, TrashSpecificType::ElectricCircuit);
 		electricWire[i] = Trash(TrashType::Electronic, TrashSpecificType::ElectricWire);
 		lightBulb[i] = Trash(TrashType::Electronic, TrashSpecificType::LightBulb);
-		if (!bananaPeel[i].LoadTrash(g_screen) ||
-			!appleCore[i].LoadTrash(g_screen) ||
-			!bigStick[i].LoadTrash(g_screen) ||
-			!smallStick[i].LoadTrash(g_screen) ||
-			!redApple[i].LoadTrash(g_screen) ||
-			!can[i].LoadTrash(g_screen) ||
-			!glassBottle[i].LoadTrash(g_screen) ||
-			!papperBag[i].LoadTrash(g_screen) ||
-			!rubberDuck[i].LoadTrash(g_screen) ||
-			!rubberGloves[i].LoadTrash(g_screen) ||
-			!waterBottle[i].LoadTrash(g_screen) ||
-			!houseHoldTrash[i].LoadTrash(g_screen) ||
-			!insectSpray[i].LoadTrash(g_screen) ||
-			!plasticBag[i].LoadTrash(g_screen) ||
-			!sponge[i].LoadTrash(g_screen) ||
-			!battery[i].LoadTrash(g_screen) ||
-			!electricCircuit[i].LoadTrash(g_screen) ||
-			!electricWire[i].LoadTrash(g_screen) ||
-			!lightBulb[i].LoadTrash(g_screen) ) {
+		if (!bananaPeel[i].LoadTrash(g_screen)) {
 			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&bananaPeel[i]);
+			AddTrashToGrid(&bananaPeel[i], grid_index);
+		}
+		if (!appleCore[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&appleCore[i]);
+			AddTrashToGrid(&appleCore[i], grid_index);
+		}
+		if (!bigStick[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&bigStick[i]);
+			AddTrashToGrid(&bigStick[i], grid_index);
+		}
+		if (!smallStick[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&smallStick[i]);
+			AddTrashToGrid(&smallStick[i], grid_index);
+		}
+		if (!redApple[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&redApple[i]);
+			AddTrashToGrid(&redApple[i], grid_index);
+		}
+		if (!purpleApple[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&purpleApple[i]);
+			AddTrashToGrid(&purpleApple[i], grid_index);
+		}
+		if (!can[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&can[i]);
+			AddTrashToGrid(&can[i], grid_index);
+		}
+		if (!glassBottle[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&glassBottle[i]);
+			AddTrashToGrid(&glassBottle[i], grid_index);
+		}
+		if (!papperBag[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&papperBag[i]);
+			AddTrashToGrid(&papperBag[i], grid_index);
+		}
+		if (!rubberDuck[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&rubberDuck[i]);
+			AddTrashToGrid(&rubberDuck[i], grid_index);
+		}
+		if (!rubberGloves[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&rubberGloves[i]);
+			AddTrashToGrid(&rubberGloves[i], grid_index);
+		}
+		if (!waterBottle[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&waterBottle[i]);
+			AddTrashToGrid(&waterBottle[i], grid_index);
+		}
+		if (!houseHoldTrash[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&houseHoldTrash[i]);
+			AddTrashToGrid(&houseHoldTrash[i], grid_index);
+		}
+		if (!insectSpray[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&insectSpray[i]);
+			AddTrashToGrid(&insectSpray[i], grid_index);
+		}
+		if (!plasticBag[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&plasticBag[i]);
+			AddTrashToGrid(&plasticBag[i], grid_index);
+		}
+		if (!sponge[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&sponge[i]);
+			AddTrashToGrid(&sponge[i], grid_index);
+		}
+		if (!battery[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&battery[i]);
+			AddTrashToGrid(&battery[i], grid_index);
+		}
+		if (!electricCircuit[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&electricCircuit[i]);
+			AddTrashToGrid(&electricCircuit[i], grid_index);
+		}
+		if (!electricWire[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&electricWire[i]);
+			AddTrashToGrid(&electricWire[i], grid_index);
+		}
+		if (!lightBulb[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridTrashIn(&lightBulb[i]);
+			AddTrashToGrid(&lightBulb[i], grid_index);
 		}
 	}
 	return true;
 }
-void static ShowTrash() {
-	for (int i = 0; i < TRASH_QUANTITIES; i++) {
-		bananaPeel[i].Render(g_screen, nullptr);
-		appleCore[i].Render(g_screen, nullptr);
-		bigStick[i].Render(g_screen, nullptr);
-		smallStick[i].Render(g_screen, nullptr);
-		redApple[i].Render(g_screen, nullptr);
-		can[i].Render(g_screen, nullptr);
-		glassBottle[i].Render(g_screen, nullptr);
-		papperBag[i].Render(g_screen, nullptr);
-		rubberDuck[i].Render(g_screen, nullptr);
-		rubberGloves[i].Render(g_screen, nullptr);
-		waterBottle[i].Render(g_screen, nullptr);
-		houseHoldTrash[i].Render(g_screen, nullptr);
-		insectSpray[i].Render(g_screen, nullptr);
-		plasticBag[i].Render(g_screen, nullptr);
-		sponge[i].Render(g_screen, nullptr);
-		battery[i].Render(g_screen, nullptr);
-		electricCircuit[i].Render(g_screen, nullptr);
-		electricWire[i].Render(g_screen, nullptr);
-		lightBulb[i].Render(g_screen, nullptr);
-	}
-}
-/*
-BananaPeel, AppleCore, BigStick, SmallStick, RedApple, PurpleApple,
-	Can, GlassBottle, PapperBag, RubberDuck, RubberGloves,WaterBottle,
-	HouseHoldTrash, InsectSpray, PlasticBag, Sponge,
-	Battery, ElectricCircuit, ElectricWire, LightBulb*/
 BaseObject horizontal;
 BaseObject vertical;
 static void RulerShow() {
@@ -268,6 +404,7 @@ static void RulerShow() {
 }
 int main(int argc, char* argv[]) {
 //init
+	LoadMapGrid();
 	if (
 		!initGame() ||
 		!loadBackground() ||
@@ -370,14 +507,14 @@ int main(int argc, char* argv[]) {
 		redhood.Move();
 		SDL_Rect RedHoodPos = redhood.GetRect();
 		if (RedHoodPos.y <= 702) {
-			ShowTrash();
+			ShowTrashInAllGrid();
 			redhood.ShowCharacter(g_screen);
 			vFenceShow(2);
 			rioTrashCan.Render(g_screen, nullptr);
 			eTrashCan.Render(g_screen, nullptr);
 		}
 		else {
-			ShowTrash();
+			ShowTrashInAllGrid();
 			vFenceShow(2);
 			rioTrashCan.Render(g_screen, nullptr);
 			eTrashCan.Render(g_screen, nullptr);
@@ -387,6 +524,7 @@ int main(int argc, char* argv[]) {
 		inventoryBar.InventoryBarRender(g_screen);
 		verticalHUD.SetSpeed(redhood.GetSpeed());
 		verticalHUD.RenderStat(g_screen, g_font);
+		//RulerShow();d
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
 	}

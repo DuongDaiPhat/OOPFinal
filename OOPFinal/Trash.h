@@ -33,7 +33,10 @@ public:
 	int GetTrashPoint() const;
 	int GetTrashWeight() const;
 	int GetTrashDeTime() const;
+	TrashType GetTrashType() const;
+	TrashSpecificType GetTrashSpecificType() const;
 	bool LoadTrash(SDL_Renderer* screen);
+	bool operator==(Trash trash2);
 	void Disappear();
 };
 

@@ -139,6 +139,7 @@
     <ClCompile Include="House.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="MapGrid.cpp" />
     <ClCompile Include="Trash.cpp" />
     <ClCompile Include="TrashCan.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -156,6 +157,7 @@
     <ClInclude Include="Fence.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="MapGrid.h" />
     <ClInclude Include="Trash.h" />
     <ClInclude Include="TrashCan.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

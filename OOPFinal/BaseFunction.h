@@ -92,3 +92,11 @@ const int BOTTOM_TREE_POS_X = 1690;
 const int BOTTOM_TREE_POS_Y = 596;
 //So luong rac tren moi loai rac
 const int TRASH_QUANTITIES = 2;
+//MapGrid Size
+const SDL_Rect GRID1_SIZE = { 0,0,832,576 };
+const SDL_Rect GRID2_SIZE = { 833,0, 511, 576 };
+const SDL_Rect GRID3_SIZE = { 1345, 0, 383, 576 };
+const SDL_Rect GRID4_SIZE = { 0, 577, 768, 504 };
+const SDL_Rect GRID5_SIZE = { 769, 577, 575, 504 };
+const SDL_Rect GRID6_SIZE = { 1345, 577, 383, 504 };
+const SDL_Rect GRID_SIZE[6] = { GRID1_SIZE,GRID2_SIZE,GRID3_SIZE, GRID4_SIZE, GRID5_SIZE, GRID6_SIZE};

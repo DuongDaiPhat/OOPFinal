@@ -27,6 +27,25 @@ int Trash::GetTrashWeight() const{
 int Trash::GetTrashDeTime()const {
 	return properties.decompositionTime;
 }
+TrashType Trash::GetTrashType() const {
+	return this->type;
+}
+TrashSpecificType Trash::GetTrashSpecificType()const {
+	return this->specificType;
+}
+bool Trash::operator==(Trash trash2) {
+	SDL_Rect trash2Rect = trash2.GetRect();
+	if (objectRect.x != trash2Rect.x || objectRect.y != trash2Rect.y || objectRect.w != trash2Rect.w || objectRect.h != trash2Rect.h) {
+		return false;
+	}
+	if (type != trash2.GetTrashType()) {
+		return false;
+	}
+	if (specificType != trash2.GetTrashSpecificType()) {
+		return false;
+	}
+	return true;
+}
 static int RandomX() {
 	random_device rd;  // Sử dụng thiết bị ngẫu nhiên để tạo seed
 	mt19937 gen(rd()); // Sử dụng Mersenne Twister làm bộ sinh số ngẫu nhiên
