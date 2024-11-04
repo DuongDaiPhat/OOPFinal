@@ -1,15 +1,7 @@
 #pragma once
 #include "BaseObject.h"
 #include "Trash.h"
-
-typedef struct Node {
-	Trash* trash;
-	Node* next;
-}Node;
-typedef struct List {
-	Node* pHead;
-	Node* pTail;
-}List;
+#include "DataStructure.h"
 
 class MapGrid {
 private:
@@ -22,7 +14,7 @@ public:
 	SDL_Rect getMapGridRect() const;
 	void addTrashToMapGrid(Trash* trash);
 	void deleteTrashFromMapGrid(Trash* trash);
-	void showTrashInGrid(SDL_Renderer* screen);
+	void showTrashInGrid(SDL_Renderer* screen) const;
 	void operator=(MapGrid grid2);
-	friend void addNode(List& objectList, Trash* trash);
+	friend void AddNode(List& objectList, Trash* trash);
 };

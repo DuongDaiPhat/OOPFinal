@@ -43,10 +43,10 @@ public:
 //properties stat of Trash
 //Weight;
 const int TINY_TRASH_WEIGHT = 0;
-const int SMALL_TRASH_WEIGHT = 1;
-const int NORMAL_TRASH_WEIGHT = 2;
-const int BIG_TRASH_WEIGHT = 3;
-const int HUGE_TRASH_WEIGHT = 4;
+const int SMALL_TRASH_WEIGHT = 0;
+const int NORMAL_TRASH_WEIGHT = 1;
+const int BIG_TRASH_WEIGHT = 2;
+const int HUGE_TRASH_WEIGHT = 3;
 //Points
 const int TINY_TRASH_POINTS = 2;
 const int SMALL_TRASH_POINTS = 5;

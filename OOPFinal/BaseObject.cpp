@@ -14,10 +14,10 @@ BaseObject::~BaseObject() {
 void BaseObject::SetRect(int x, int y, int w, int h) {
 	objectRect = { x,y,w,h };
 }
-SDL_Rect BaseObject::GetRect(){
+SDL_Rect BaseObject::GetRect() const{
 	return objectRect;
 }
-SDL_Texture* BaseObject::GetTexture() {
+SDL_Texture* BaseObject::GetTexture() const{
 	return objectTexture;
 }
 bool BaseObject::LoadImage(SDL_Renderer* g_screen, const string file_path) {

@@ -39,4 +39,5 @@ public:
 	void Move();
 	SDL_Rect GetRealRect();
 	bool CheckCollision(int newX, int newY,int w, int h, SDL_Rect otherRect);
+	friend class Inventory;
 };

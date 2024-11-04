@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseObject.h"
+#include "Character.h"
+#include "DataStructure.h"
 class VerticalHUD:public BaseObject {
 private:
 	SDL_Texture* speedTextTexture;
@@ -15,6 +17,7 @@ public:
 	int GetSpeed() const;
 	bool LoadHUD(SDL_Renderer* screen);
 	bool RenderStat(SDL_Renderer* screen, TTF_Font* font);
+	friend class Inventory;
 };
 class InventoryBar :public BaseObject {
 private:
@@ -22,4 +25,22 @@ private:
 public:
 	bool LoadInventoryBar(SDL_Renderer* screen);
 	void InventoryBarRender(SDL_Renderer* screen);
+	friend class Inventory;
+};
+
+class Inventory{
+private:
+	int inventoryMinY;
+	int inventoryMaxY;
+	int inventoryPresentY;
+	int inventoryPosX;
+	Stack trashInInventory;
+public:
+	Inventory();
+	void InventorySetUp();
+	void AddTrashToInventory(Character &character, Trash* trash);
+	Trash* RemoveTrashFromInventory(Character &character);
+	void InventoryShow(SDL_Renderer* screen) const;
+	friend class InventoryBar;
+	friend class Character;
 };

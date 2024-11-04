@@ -6,7 +6,7 @@
 #include "Tree.h"
 #include "TrashCan.h"
 #include "HUD.h"
-#include "Trash.h";
+#include "Trash.h"
 #include "MapGrid.h"
 
 //init
@@ -86,6 +86,8 @@ static bool loadBackground() {
 VerticalHUD verticalHUD;
 //InventoryBar
 InventoryBar inventoryBar;
+//Inventory
+Inventory inventory;
 //Character:
 Character redhood;
 static bool loadRedHood() {
@@ -172,7 +174,7 @@ static void LoadMapGrid() {
 		mapGrid[i] = MapGrid(GRID_SIZE[i]);
 	}
 }
-int CheckGridTrashIn(Trash* trash) {
+static int CheckGridTrashIn(Trash* trash) {
 	SDL_Rect trashRect = trash->GetRect();
 	if ((GRID1_SIZE.x <= trashRect.x && trashRect.x <= GRID1_SIZE.x + GRID1_SIZE.w) && (GRID1_SIZE.y <= trashRect.y && trashRect.y <= GRID1_SIZE.y + GRID1_SIZE.h)) {
 		return 0;
@@ -194,7 +196,7 @@ int CheckGridTrashIn(Trash* trash) {
 	}
 	return -1;
 }
-void AddTrashToGrid(Trash* trash, int gridNumber) {
+static void AddTrashToGrid(Trash* trash, int gridNumber) {
 	if (gridNumber < 0 || gridNumber >= 6) {
 		cout << "Gia tri khong hop le" << endl;
 	}
@@ -203,7 +205,7 @@ void AddTrashToGrid(Trash* trash, int gridNumber) {
 	}
 }
 
-void ShowTrashInAllGrid() {
+static void ShowTrashInAllGrid() {
 	for (int i = 0; i < 6; i++) {
 		mapGrid[i].showTrashInGrid(g_screen);
 	}
@@ -439,7 +441,6 @@ int main(int argc, char* argv[]) {
 	//test
 	horizontal.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\horizontal.png");
 	vertical.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\vertical.png");
-
 //running loop
 	bool running = true;
 	while (running) {
@@ -524,7 +525,8 @@ int main(int argc, char* argv[]) {
 		inventoryBar.InventoryBarRender(g_screen);
 		verticalHUD.SetSpeed(redhood.GetSpeed());
 		verticalHUD.RenderStat(g_screen, g_font);
-		//RulerShow();d
+		inventory.InventoryShow(g_screen);
+		//RulerShow();
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
 	}

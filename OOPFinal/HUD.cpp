@@ -81,3 +81,51 @@ void InventoryBar::InventoryBarRender(SDL_Renderer* screen) {
 	this->Render(screen, nullptr);
 	this->baloIcon.Render(screen, nullptr);
 }
+Inventory::Inventory() {
+	this->InventorySetUp();
+}
+void Inventory::InventorySetUp() {
+	inventoryMinY = INVENTORYBAR_POSY + INVENTORYBAR_HEIGHT - 20;
+	inventoryMaxY = INVENTORYBAR_POSY + BALOICON_HEIGHT + 10;
+	inventoryPresentY = inventoryMinY;
+	inventoryPosX = INVENTORYBAR_POSX;
+}
+void Inventory::AddTrashToInventory(Character& character,Trash* trash) {
+	SDL_Rect trashRect = trash->GetRect();
+	int newTrashWidth = trashRect.w;
+	int newTrashHeight = trashRect.h;
+	if (inventoryMaxY > inventoryPresentY - newTrashHeight) {
+		cout << "Balo day" << endl;
+		return;
+	}
+	if (trashRect.w < 50) {
+		inventoryPosX = INVENTORYBAR_POSX + 35;
+	}
+	else if (trashRect.w <= 60 && trashRect.w >= 50) {
+		inventoryPosX = INVENTORYBAR_POSX + 23;
+	}
+	else {
+		inventoryPosX = INVENTORYBAR_POSX + 10;
+	}
+	int trashWeight = trash->GetTrashWeight();
+	character.charSpeed -= trashWeight;
+	
+	trash->SetRect(inventoryPosX, inventoryPresentY - newTrashHeight, newTrashWidth, newTrashHeight);
+	trashInInventory.Push(trash);
+	inventoryPresentY -= newTrashHeight + 5;
+}
+Trash* Inventory::RemoveTrashFromInventory(Character &character) {
+	Trash* trash = trashInInventory.Pop();
+	if (trash != nullptr) {
+		int trashWeight = trash->GetTrashWeight();
+		character.charSpeed += trashWeight;
+	}
+	return trash;
+}
+void Inventory::InventoryShow(SDL_Renderer* screen) const{
+	Node* temp = trashInInventory.stack.pHead;
+	while (temp != nullptr) {
+		temp->trash->Render(screen, nullptr);
+		temp = temp->next;
+	}
+}
