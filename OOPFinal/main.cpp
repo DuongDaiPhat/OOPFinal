@@ -174,24 +174,23 @@ static void LoadMapGrid() {
 		mapGrid[i] = MapGrid(GRID_SIZE[i]);
 	}
 }
-static int CheckGridTrashIn(Trash* trash) {
-	SDL_Rect trashRect = trash->GetRect();
-	if ((GRID1_SIZE.x <= trashRect.x && trashRect.x <= GRID1_SIZE.x + GRID1_SIZE.w) && (GRID1_SIZE.y <= trashRect.y && trashRect.y <= GRID1_SIZE.y + GRID1_SIZE.h)) {
+static int CheckGridObjectIn(SDL_Rect objRect) {
+	if ((GRID1_SIZE.x <= objRect.x && objRect.x <= GRID1_SIZE.x + GRID1_SIZE.w) && (GRID1_SIZE.y <= objRect.y && objRect.y <= GRID1_SIZE.y + GRID1_SIZE.h)) {
 		return 0;
 	}
-	else if ((GRID2_SIZE.x <= trashRect.x && trashRect.x <= GRID2_SIZE.x + GRID2_SIZE.w) && (GRID2_SIZE.y <= trashRect.y && trashRect.y <= GRID2_SIZE.y + GRID2_SIZE.h)) {
+	else if ((GRID2_SIZE.x <= objRect.x && objRect.x <= GRID2_SIZE.x + GRID2_SIZE.w) && (GRID2_SIZE.y <= objRect.y && objRect.y <= GRID2_SIZE.y + GRID2_SIZE.h)) {
 		return 1;
 	}
-	else if ((GRID3_SIZE.x <= trashRect.x && trashRect.x <= GRID3_SIZE.x + GRID3_SIZE.w) && (GRID3_SIZE.y <= trashRect.y && trashRect.y <= GRID3_SIZE.y + GRID3_SIZE.h)) {
+	else if ((GRID3_SIZE.x <= objRect.x && objRect.x <= GRID3_SIZE.x + GRID3_SIZE.w) && (GRID3_SIZE.y <= objRect.y && objRect.y <= GRID3_SIZE.y + GRID3_SIZE.h)) {
 		return 2;
 	}
-	else if ((GRID4_SIZE.x <= trashRect.x && trashRect.x <= GRID4_SIZE.x + GRID4_SIZE.w) && (GRID4_SIZE.y <= trashRect.y && trashRect.y <= GRID4_SIZE.y + GRID4_SIZE.h)) {
+	else if ((GRID4_SIZE.x <= objRect.x && objRect.x <= GRID4_SIZE.x + GRID4_SIZE.w) && (GRID4_SIZE.y <= objRect.y && objRect.y <= GRID4_SIZE.y + GRID4_SIZE.h)) {
 		return 3;
 	}
-	else if ((GRID5_SIZE.x <= trashRect.x && trashRect.x <= GRID5_SIZE.x + GRID5_SIZE.w) && (GRID5_SIZE.y <= trashRect.y && trashRect.y <= GRID5_SIZE.y + GRID5_SIZE.h)) {
+	else if ((GRID5_SIZE.x <= objRect.x && objRect.x <= GRID5_SIZE.x + GRID5_SIZE.w) && (GRID5_SIZE.y <= objRect.y && objRect.y <= GRID5_SIZE.y + GRID5_SIZE.h)) {
 		return 4;
 	}
-	else if ((GRID6_SIZE.x <= trashRect.x && trashRect.x <= GRID6_SIZE.x + GRID6_SIZE.w) && (GRID6_SIZE.y <= trashRect.y && trashRect.y <= GRID6_SIZE.y + GRID6_SIZE.h)) {
+	else if ((GRID6_SIZE.x <= objRect.x && objRect.x <= GRID6_SIZE.x + GRID6_SIZE.w) && (GRID6_SIZE.y <= objRect.y && objRect.y <= GRID6_SIZE.y + GRID6_SIZE.h)) {
 		return 5;
 	}
 	return -1;
@@ -259,140 +258,140 @@ bool static LoadAllTrash() {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&bananaPeel[i]);
+			grid_index = CheckGridObjectIn(bananaPeel[i].GetRect());
 			AddTrashToGrid(&bananaPeel[i], grid_index);
 		}
 		if (!appleCore[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&appleCore[i]);
+			grid_index = CheckGridObjectIn(appleCore[i].GetRect());
 			AddTrashToGrid(&appleCore[i], grid_index);
 		}
 		if (!bigStick[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&bigStick[i]);
+			grid_index = CheckGridObjectIn(bigStick[i].GetRect());
 			AddTrashToGrid(&bigStick[i], grid_index);
 		}
 		if (!smallStick[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&smallStick[i]);
+			grid_index = CheckGridObjectIn(smallStick[i].GetRect());
 			AddTrashToGrid(&smallStick[i], grid_index);
 		}
 		if (!redApple[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&redApple[i]);
+			grid_index = CheckGridObjectIn(redApple[i].GetRect());
 			AddTrashToGrid(&redApple[i], grid_index);
 		}
 		if (!purpleApple[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&purpleApple[i]);
+			grid_index = CheckGridObjectIn(purpleApple[i].GetRect());
 			AddTrashToGrid(&purpleApple[i], grid_index);
 		}
 		if (!can[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&can[i]);
+			grid_index = CheckGridObjectIn(can[i].GetRect());
 			AddTrashToGrid(&can[i], grid_index);
 		}
 		if (!glassBottle[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&glassBottle[i]);
+			grid_index = CheckGridObjectIn(glassBottle[i].GetRect());
 			AddTrashToGrid(&glassBottle[i], grid_index);
 		}
 		if (!papperBag[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&papperBag[i]);
+			grid_index = CheckGridObjectIn(papperBag[i].GetRect());
 			AddTrashToGrid(&papperBag[i], grid_index);
 		}
 		if (!rubberDuck[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&rubberDuck[i]);
+			grid_index = CheckGridObjectIn(rubberDuck[i].GetRect());
 			AddTrashToGrid(&rubberDuck[i], grid_index);
 		}
 		if (!rubberGloves[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&rubberGloves[i]);
+			grid_index = CheckGridObjectIn(rubberGloves[i].GetRect());
 			AddTrashToGrid(&rubberGloves[i], grid_index);
 		}
 		if (!waterBottle[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&waterBottle[i]);
+			grid_index = CheckGridObjectIn(waterBottle[i].GetRect());
 			AddTrashToGrid(&waterBottle[i], grid_index);
 		}
 		if (!houseHoldTrash[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&houseHoldTrash[i]);
+			grid_index = CheckGridObjectIn(houseHoldTrash[i].GetRect());
 			AddTrashToGrid(&houseHoldTrash[i], grid_index);
 		}
 		if (!insectSpray[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&insectSpray[i]);
+			grid_index = CheckGridObjectIn(insectSpray[i].GetRect());
 			AddTrashToGrid(&insectSpray[i], grid_index);
 		}
 		if (!plasticBag[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&plasticBag[i]);
+			grid_index = CheckGridObjectIn(plasticBag[i].GetRect());
 			AddTrashToGrid(&plasticBag[i], grid_index);
 		}
 		if (!sponge[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&sponge[i]);
+			grid_index = CheckGridObjectIn(sponge[i].GetRect());
 			AddTrashToGrid(&sponge[i], grid_index);
 		}
 		if (!battery[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&battery[i]);
+			grid_index = CheckGridObjectIn(battery[i].GetRect());
 			AddTrashToGrid(&battery[i], grid_index);
 		}
 		if (!electricCircuit[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&electricCircuit[i]);
+			grid_index = CheckGridObjectIn(electricCircuit[i].GetRect());
 			AddTrashToGrid(&electricCircuit[i], grid_index);
 		}
 		if (!electricWire[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&electricWire[i]);
+			grid_index = CheckGridObjectIn(electricWire[i].GetRect());
 			AddTrashToGrid(&electricWire[i], grid_index);
 		}
 		if (!lightBulb[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridTrashIn(&lightBulb[i]);
+			grid_index = CheckGridObjectIn(lightBulb[i].GetRect());
 			AddTrashToGrid(&lightBulb[i], grid_index);
 		}
 	}
