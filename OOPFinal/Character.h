@@ -2,6 +2,7 @@
 #include "BaseObject.h"
 //Con trỏ bàn phím
 
+extern const Uint8* pkey;
 typedef struct input {
 	bool doNothing;
 	bool goUp;

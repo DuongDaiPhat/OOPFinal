@@ -84,35 +84,45 @@ void InventoryBar::InventoryBarRender(SDL_Renderer* screen) {
 Inventory::Inventory() {
 	this->InventorySetUp();
 }
+bool Inventory::IsFull() const{
+	return isFull;
+}
 void Inventory::InventorySetUp() {
+	isFull = false;
 	inventoryMinY = INVENTORYBAR_POSY + INVENTORYBAR_HEIGHT - 20;
-	inventoryMaxY = INVENTORYBAR_POSY + BALOICON_HEIGHT + 10;
+	inventoryMaxY = INVENTORYBAR_POSY + BALOICON_HEIGHT + 25;
 	inventoryPresentY = inventoryMinY;
 	inventoryPosX = INVENTORYBAR_POSX;
 }
 void Inventory::AddTrashToInventory(Character& character,Trash* trash) {
-	SDL_Rect trashRect = trash->GetRect();
-	int newTrashWidth = trashRect.w;
-	int newTrashHeight = trashRect.h;
-	if (inventoryMaxY > inventoryPresentY - newTrashHeight) {
+	if (isFull) {
 		cout << "Balo day" << endl;
 		return;
 	}
-	if (trashRect.w < 50) {
-		inventoryPosX = INVENTORYBAR_POSX + 35;
-	}
-	else if (trashRect.w <= 60 && trashRect.w >= 50) {
-		inventoryPosX = INVENTORYBAR_POSX + 23;
+	SDL_Rect trashRect = trash->GetRect();
+	int newTrashWidth = trashRect.w;
+	int newTrashHeight = trashRect.h;
+	if (inventoryMaxY >= inventoryPresentY - newTrashHeight) {
+		isFull = true;
+		cout << "Balo day" << endl;
 	}
 	else {
-		inventoryPosX = INVENTORYBAR_POSX + 10;
+		if (trashRect.w < 50) {
+			inventoryPosX = INVENTORYBAR_POSX + 35;
+		}
+		else if (trashRect.w <= 60 && trashRect.w >= 50) {
+			inventoryPosX = INVENTORYBAR_POSX + 23;
+		}
+		else {
+			inventoryPosX = INVENTORYBAR_POSX + 10;
+		}
+		int trashWeight = trash->GetTrashWeight();
+		character.charSpeed -= trashWeight;
+
+		trash->SetRect(inventoryPosX, inventoryPresentY - newTrashHeight, newTrashWidth, newTrashHeight);
+		trashInInventory.Push(trash);
+		inventoryPresentY -= newTrashHeight + 5;
 	}
-	int trashWeight = trash->GetTrashWeight();
-	character.charSpeed -= trashWeight;
-	
-	trash->SetRect(inventoryPosX, inventoryPresentY - newTrashHeight, newTrashWidth, newTrashHeight);
-	trashInInventory.Push(trash);
-	inventoryPresentY -= newTrashHeight + 5;
 }
 Trash* Inventory::RemoveTrashFromInventory(Character &character) {
 	Trash* trash = trashInInventory.Pop();
@@ -120,6 +130,7 @@ Trash* Inventory::RemoveTrashFromInventory(Character &character) {
 		int trashWeight = trash->GetTrashWeight();
 		character.charSpeed += trashWeight;
 	}
+	isFull = false;
 	return trash;
 }
 void Inventory::InventoryShow(SDL_Renderer* screen) const{

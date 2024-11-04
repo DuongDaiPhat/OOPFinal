@@ -195,6 +195,17 @@ static int CheckGridObjectIn(SDL_Rect objRect) {
 	}
 	return -1;
 }
+bool check[6] = { false, false, false, false, false, false };
+static void CheckObjectInAllGrid(SDL_Rect objRect) {
+	for (int i = 0; i < 6; i++) {
+		if (SDL_HasIntersection(&GRID_SIZE[i], &objRect)) {
+			check[i] = true;
+		}
+		else {
+			check[i] = false;
+		}
+	}
+}
 static void AddTrashToGrid(Trash* trash, int gridNumber) {
 	if (gridNumber < 0 || gridNumber >= 6) {
 		cout << "Gia tri khong hop le" << endl;
@@ -397,11 +408,71 @@ bool static LoadAllTrash() {
 	}
 	return true;
 }
+//temp
 BaseObject horizontal;
 BaseObject vertical;
+BaseObject borderX1;
+BaseObject borderX2;
+BaseObject borderY1;
+BaseObject borderY2;
+
+BaseObject GRID_BORDER_Y;
+BaseObject GRIDX1, GRIDX2, GRIDX3, GRIDX4;
 static void RulerShow() {
 	vertical.Render(g_screen, nullptr);
 	horizontal.Render(g_screen, nullptr);
+}
+static void BorderUpdate() {
+	SDL_Rect charRect = redhood.GetRealRect();
+	borderX1.SetRect(charRect.x, charRect.y, charRect.w, 1);
+	borderX2.SetRect(charRect.x, charRect.y + charRect.h, charRect.w, 1);
+	borderY1.SetRect(charRect.x, charRect.y, 1, charRect.h);
+	borderY2.SetRect(charRect.x + charRect.w, charRect.y, 1, charRect.h);
+}
+static void GRIDMAPBORDER() {
+	GRID_BORDER_Y.SetRect(0, 576, 1920, 1);
+	GRIDX1.SetRect(GRID1_SIZE.x + GRID1_SIZE.w, 0, 1, GRID1_SIZE.h);
+	GRIDX2.SetRect(GRID2_SIZE.x + GRID1_SIZE.w, 0, 1, GRID2_SIZE.h);
+	GRIDX3.SetRect(GRID4_SIZE.x + GRID4_SIZE.w, GRID4_SIZE.y, 1, GRID4_SIZE.h);
+	GRIDX4.SetRect(GRID5_SIZE.x + GRID5_SIZE.w, GRID5_SIZE.y, 1, GRID5_SIZE.h);
+}
+static void BorderShow() {
+	borderX1.Render(g_screen, nullptr);
+	borderX2.Render(g_screen, nullptr);
+	borderY1.Render(g_screen, nullptr);
+	borderY2.Render(g_screen, nullptr);
+	GRID_BORDER_Y.Render(g_screen, nullptr);
+	GRIDX1.Render(g_screen, nullptr);
+	GRIDX2.Render(g_screen, nullptr);
+	GRIDX3.Render(g_screen, nullptr);
+	GRIDX4.Render(g_screen, nullptr);
+}
+
+//combined function//
+void CharacterCollectTrash() {
+	SDL_Rect charRect = redhood.GetRealRect();
+	CheckObjectInAllGrid(charRect);
+	for (int i = 0; i < 6; i++) {
+		if (!check[i]) {
+			continue;
+		}
+		int grid_index = i;
+		Node* temp = mapGrid[grid_index].objectsList.pHead;
+		if (grid_index == 0 || grid_index == 2 || temp == nullptr || inventory.IsFull()) {
+			continue;
+		}
+		while (temp != nullptr) {
+			SDL_Rect trashRect = temp->trash->GetRect();
+			if (SDL_HasIntersection(&charRect, &trashRect)) {
+				inventory.AddTrashToInventory(redhood, temp->trash);
+				if (!inventory.IsFull()) {
+					mapGrid[grid_index].deleteTrashFromMapGrid(temp->trash);
+				}
+				return;
+			}
+			temp = temp->next;
+		}
+	}
 }
 int main(int argc, char* argv[]) {
 //init
@@ -440,6 +511,16 @@ int main(int argc, char* argv[]) {
 	//test
 	horizontal.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\horizontal.png");
 	vertical.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\vertical.png");
+	borderX1.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
+	borderX2.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
+	borderY1.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderY.png");
+	borderY2.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderY.png");
+	GRID_BORDER_Y.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderY.png");
+	GRIDX1.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
+	GRIDX2.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
+	GRIDX3.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
+	GRIDX4.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
+	GRIDMAPBORDER();
 //running loop
 	bool running = true;
 	while (running) {
@@ -520,6 +601,11 @@ int main(int argc, char* argv[]) {
 			eTrashCan.Render(g_screen, nullptr);
 			redhood.ShowCharacter(g_screen);
 		}
+		if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_e && !inventory.IsFull()) {
+			CharacterCollectTrash();
+		}
+		BorderUpdate();
+		BorderShow();
 		//cap nhat stat
 		inventoryBar.InventoryBarRender(g_screen);
 		verticalHUD.SetSpeed(redhood.GetSpeed());

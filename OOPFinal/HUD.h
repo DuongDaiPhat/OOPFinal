@@ -30,6 +30,7 @@ public:
 
 class Inventory{
 private:
+	bool isFull;
 	int inventoryMinY;
 	int inventoryMaxY;
 	int inventoryPresentY;
@@ -41,6 +42,7 @@ public:
 	void AddTrashToInventory(Character &character, Trash* trash);
 	Trash* RemoveTrashFromInventory(Character &character);
 	void InventoryShow(SDL_Renderer* screen) const;
+	bool IsFull() const;
 	friend class InventoryBar;
 	friend class Character;
 };

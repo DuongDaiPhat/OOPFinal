@@ -2,7 +2,7 @@
 #include "BaseFunction.h"
 #include "math.h"
 
-static const Uint8* pkey = SDL_GetKeyboardState(NULL);
+const Uint8* pkey = SDL_GetKeyboardState(NULL);
 Character::Character() {
 	frameCount = 0;
 	frameNumber = 0;
@@ -207,7 +207,7 @@ void Character::Move() {
 	}
 }
 SDL_Rect Character::GetRealRect() {
-	SDL_Rect realRect = { objectRect.x, objectRect.y + 50,100,175};
+	SDL_Rect realRect = { objectRect.x + 10, objectRect.y + 30,90,175};
 	return realRect;
 }
 

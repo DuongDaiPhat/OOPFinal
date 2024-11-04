@@ -12,6 +12,8 @@ static SDL_Window *g_window;
 static SDL_Renderer* g_screen;
 //Tạo biến thu thập sự kiện người chơi
 static SDL_Event g_event;
+//Bàn phím
+
 //font
 extern TTF_Font* g_font;
 //Thông số cơ bản
