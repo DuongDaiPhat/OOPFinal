@@ -7,11 +7,11 @@ typedef struct TrashProperties {
 	int decompositionTime;
 }TrashProperties;
 enum class TrashType {
-	None,
-	Organic,
-	Reclyable,
-	NonReclyable,
-	Electronic
+	None = 0,
+	Organic = 1,
+	Reclyable = 2,
+	NonReclyable = 3,
+	Electronic = 4
 };
 enum class TrashSpecificType {
 	None,

@@ -3,6 +3,13 @@
 
 typedef struct Node {
 	Trash* trash;
+	int throwPositionX;
+	int throwPositionY;
+	float time;
+	float timeToMaxHeight;
+	int stopPosition;
+	bool isDisappeared;
+	bool throwLeft;
 	Node* next;
 }Node;
 typedef struct List {
@@ -23,9 +30,27 @@ private:
 	_Stack stack;
 public:
 	Stack();
-	~Stack();
-	void Push(Trash* trash);
+	virtual ~Stack();
+	virtual void Push(Trash* trash);
+	void SetTime(const float& time);
+	void SetThrowingPosX(const int& x);
+	void SetThrowingPosY(const int& y);
+	void SetStopPosition(const int& stopPosition);
+	void SetDisappeared();
+	void SetAppeared();
+	void SetThrowLeft(bool check);
+	void SetTimeToMaxHeight(const float& Mtime);
+	Trash* GetTrashInStack(Node* node);
+	float GetTime() const;
+	int GetThrowingPosX() const;
+	int GetThrowingPosY() const;
+	int GetStopPosition() const;
+	float GetTimeToMaxHeight() const;
+	bool IsDisappear(Node* node) const;
+	bool IsThrowLeft() const;
 	Trash* Pop();
+	Node* ReturnHead()const;
+	void DeleteNodeStack(Node* node);
 	friend void InitStack(_Stack& stack);
 	friend void DeleteStack(_Stack& stack);
 	friend class Inventory;

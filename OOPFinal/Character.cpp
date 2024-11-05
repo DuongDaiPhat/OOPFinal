@@ -10,7 +10,8 @@ Character::Character() {
 	frameHeight = 0;
 	xVelocity = 0;
 	yVelocity = 0;
-	inputType.doNothing = 1;
+	isFacingLeft = 0;
+	inputType.idle = 1;
 	inputType.goDown = 0;
 	inputType.goLeft = 0;
 	inputType.goRight = 0;
@@ -56,16 +57,21 @@ void Character::SetClips() {
 		actionFrameClip[i].h = frameHeight;
 	}
 }
+bool Character::IsFacingLeft() const {
+	return this->isFacingLeft;
+}
 void Character::HandleInput(SDL_Renderer* screen,SDL_Scancode left, SDL_Scancode up, SDL_Scancode right, SDL_Scancode down) {
-	inputType.doNothing = 1;
+	inputType.idle = 1;
 	if (pkey[left]) {
 		if (inputType.goLeft == 0) {
 			LoadCharacterImage(screen, "..\\assets\\characterSpriteSheet\\RedHoodRunAnimation.png");
 		}
+	
 		inputType.goRight = 0;
 		xVelocity -= charSpeed;
 		inputType.goLeft = 1;
-		inputType.doNothing = 0;
+		inputType.idle = 0;
+		isFacingLeft = 1;
 	}
 	if (pkey[right]) {
 		if (inputType.goRight == 0) {
@@ -74,7 +80,8 @@ void Character::HandleInput(SDL_Renderer* screen,SDL_Scancode left, SDL_Scancode
 		inputType.goLeft = 0;
 		xVelocity += charSpeed;
 		inputType.goRight = 1;
-		inputType.doNothing = 0;
+		inputType.idle = 0;
+		isFacingLeft = 0;
 	}
 	if (pkey[up]) {
 		if (inputType.goUp == 0) {
@@ -83,7 +90,7 @@ void Character::HandleInput(SDL_Renderer* screen,SDL_Scancode left, SDL_Scancode
 		inputType.goDown = 0;
 		yVelocity -= charSpeed;
 		inputType.goUp = 1;
-		inputType.doNothing = 0;
+		inputType.idle = 0;
 	}
 	if (pkey[down]) {
 		if (inputType.goDown == 0) {
@@ -92,20 +99,15 @@ void Character::HandleInput(SDL_Renderer* screen,SDL_Scancode left, SDL_Scancode
 		inputType.goUp = 0;
 		yVelocity += charSpeed;
 		inputType.goDown = 1;
-		inputType.doNothing = 0;
+		inputType.idle = 0;
 	}
-	if (inputType.doNothing) {
-		if (inputType.goRight == 1) {
+
+	if (inputType.idle) {
+		if (!isFacingLeft) {
 			LoadCharacterImage(screen, "..\\assets\\characterSpriteSheet\\RedHoodIdleRight.png");
 		}
-		else if (inputType.goLeft == 1) {
+		else {
 			LoadCharacterImage(screen, "..\\assets\\characterSpriteSheet\\RedHoodIdleLeft.png");
-		}
-		else if (inputType.goDown == 1) {
-			LoadCharacterImage(screen, "..\\assets\\characterSpriteSheet\\RedHoodIdleRight.png");
-		}
-		else if (inputType.goUp == 1) {
-			LoadCharacterImage(screen, "..\\assets\\characterSpriteSheet\\RedHoodIdleRight.png");
 		}
 	}
 	
@@ -139,7 +141,7 @@ bool Character::ShowCharacter(SDL_Renderer* screen) {
 			animationDelay = 0;
 		}
 	}
-	else if (inputType.doNothing == 1) {
+	else if (inputType.idle == 1) {
 		animationDelay++;
 		if (animationDelay >= 8) {
 			frameCount++;
@@ -156,13 +158,21 @@ bool Character::ShowCharacter(SDL_Renderer* screen) {
 	SDL_Rect renderQuad = { objectRect.x, objectRect.y, 125, 200};
 	if (inputType.goRight == 1) {
 		SDL_RenderCopy(screen, objectTexture, currentClip, &renderQuad);
-		/*cout << "objectRect: x=" << objectRect.x << ", y=" << objectRect.y << ", w=" << objectRect.w << ", h=" << objectRect.h << endl;
-		cout << "currentClip x=" << currentClip->x << ", y = " << currentClip->y << ", w = " << currentClip->w << ", h = " << currentClip->h << endl;*/
 	}
 	else if (inputType.goLeft == 1) {
 		SDL_RenderCopyEx(screen, objectTexture, currentClip, &renderQuad,0,NULL,SDL_FLIP_HORIZONTAL);
-		/*cout << "objectRect: x=" << objectRect.x << ", y=" << objectRect.y << ", w=" << objectRect.w << ", h=" << objectRect.h << endl;
-		cout << "currentClip x=" << currentClip->x << ", y = " << currentClip->y << ", w = " << currentClip->w << ", h = " << currentClip->h << endl;*/
+	}
+	else if (inputType.goDown == 1 && isFacingLeft == 0) {
+		SDL_RenderCopy(screen, objectTexture, currentClip, &renderQuad);
+	}
+	else if (inputType.goDown == 1 && isFacingLeft == 1) {
+		SDL_RenderCopyEx(screen, objectTexture, currentClip, &renderQuad, 0, NULL, SDL_FLIP_HORIZONTAL);
+	}
+	else if (inputType.goUp == 1 && isFacingLeft == 0) {
+		SDL_RenderCopy(screen, objectTexture, currentClip, &renderQuad);
+	}
+	else if (inputType.goUp == 1 && isFacingLeft == 1) {
+		SDL_RenderCopyEx(screen, objectTexture, currentClip, &renderQuad, 0, NULL, SDL_FLIP_HORIZONTAL);
 	}
 	else {
 		SDL_RenderCopy(screen, objectTexture, currentClip, &renderQuad);

@@ -87,6 +87,12 @@ Inventory::Inventory() {
 bool Inventory::IsFull() const{
 	return isFull;
 }
+bool Inventory::IsEmpty()const {
+	if (inventoryPresentY == inventoryMinY) {
+		return true;
+	}
+	return false;
+}
 void Inventory::InventorySetUp() {
 	isFull = false;
 	inventoryMinY = INVENTORYBAR_POSY + INVENTORYBAR_HEIGHT - 20;
@@ -124,13 +130,18 @@ void Inventory::AddTrashToInventory(Character& character,Trash* trash) {
 		inventoryPresentY -= newTrashHeight + 5;
 	}
 }
-Trash* Inventory::RemoveTrashFromInventory(Character &character) {
+Trash* Inventory::GetTrashFromInventory(Character &character) {
 	Trash* trash = trashInInventory.Pop();
 	if (trash != nullptr) {
+		SDL_Rect trashRect = trash->GetRect();
 		int trashWeight = trash->GetTrashWeight();
 		character.charSpeed += trashWeight;
+		inventoryPresentY += trashRect.h + 5;
+		isFull = false;
 	}
-	isFull = false;
+	else {
+		cout << "Khong co rac" << endl;
+	}
 	return trash;
 }
 void Inventory::InventoryShow(SDL_Renderer* screen) const{
@@ -139,4 +150,7 @@ void Inventory::InventoryShow(SDL_Renderer* screen) const{
 		temp->trash->Render(screen, nullptr);
 		temp = temp->next;
 	}
+}
+int Inventory::GetInventoryPresentY()const {
+	return this->inventoryPresentY;
 }

@@ -3,13 +3,13 @@
 //Con trỏ bàn phím
 
 extern const Uint8* pkey;
+class AirboneStack;
 typedef struct input {
-	bool doNothing;
+	bool idle;
 	bool goUp;
 	bool goDown;
 	bool goLeft;
 	bool goRight;
-	bool turning;
 }input;
 class Character :public BaseObject {
 protected:
@@ -22,6 +22,7 @@ protected:
 	double yVelocity;
 	int charSpeed;
 	input inputType;
+	bool isFacingLeft;
 public:
 	Character();
 	~Character();
@@ -31,6 +32,7 @@ public:
 	bool ShowCharacter(SDL_Renderer* screen);
 	void HandleInput(SDL_Renderer* screen,SDL_Scancode left, SDL_Scancode up, SDL_Scancode right, SDL_Scancode down);
 	void SetClips();
+	bool IsFacingLeft() const;
 	double GetXVelocity() const;
 	double GetYVelocity() const;
 	void SetXVelocity(int Velocity);
@@ -41,4 +43,5 @@ public:
 	SDL_Rect GetRealRect();
 	bool CheckCollision(int newX, int newY,int w, int h, SDL_Rect otherRect);
 	friend class Inventory;
+	friend class AirboneStack;
 };

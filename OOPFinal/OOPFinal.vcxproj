@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AirBoneStack.cpp" />
     <ClCompile Include="BaseFunction.cpp" />
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -152,6 +153,7 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AirBoneStack.h" />
     <ClInclude Include="BaseFunction.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Character.h" />

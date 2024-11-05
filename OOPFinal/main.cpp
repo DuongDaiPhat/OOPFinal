@@ -8,6 +8,7 @@
 #include "HUD.h"
 #include "Trash.h"
 #include "MapGrid.h"
+#include "AirBoneStack.h"
 
 //init
 static bool createWindow() {
@@ -430,7 +431,7 @@ static void BorderUpdate() {
 	borderY2.SetRect(charRect.x + charRect.w, charRect.y, 1, charRect.h);
 }
 static void GRIDMAPBORDER() {
-	GRID_BORDER_Y.SetRect(0, 576, 1920, 1);
+	GRID_BORDER_Y.SetRect(100, inventory.GetInventoryPresentY(), 100, 1);
 	GRIDX1.SetRect(GRID1_SIZE.x + GRID1_SIZE.w, 0, 1, GRID1_SIZE.h);
 	GRIDX2.SetRect(GRID2_SIZE.x + GRID1_SIZE.w, 0, 1, GRID2_SIZE.h);
 	GRIDX3.SetRect(GRID4_SIZE.x + GRID4_SIZE.w, GRID4_SIZE.y, 1, GRID4_SIZE.h);
@@ -447,9 +448,11 @@ static void BorderShow() {
 	GRIDX3.Render(g_screen, nullptr);
 	GRIDX4.Render(g_screen, nullptr);
 }
+//airbone stack
+AirboneStack airboneStack;
 
 //combined function//
-void CharacterCollectTrash() {
+static void CharacterCollectTrash() {
 	SDL_Rect charRect = redhood.GetRealRect();
 	CheckObjectInAllGrid(charRect);
 	for (int i = 0; i < 6; i++) {
@@ -458,7 +461,7 @@ void CharacterCollectTrash() {
 		}
 		int grid_index = i;
 		Node* temp = mapGrid[grid_index].objectsList.pHead;
-		if (grid_index == 0 || grid_index == 2 || temp == nullptr || inventory.IsFull()) {
+		if (grid_index == 0 || temp == nullptr || inventory.IsFull()) {
 			continue;
 		}
 		while (temp != nullptr) {
@@ -474,9 +477,51 @@ void CharacterCollectTrash() {
 		}
 	}
 }
-int main(int argc, char* argv[]) {
-//init
-	LoadMapGrid();
+static void CharacterThrowTrash() {
+	Trash* tempTrash = inventory.GetTrashFromInventory(redhood);
+	if (tempTrash == nullptr) {
+		cout << "Khong co rac de nem" << endl;
+		return;
+	}
+	airboneStack.GetInfomationForCal(redhood.GetRealRect());
+	airboneStack.Push(tempTrash, redhood.IsFacingLeft());
+	if (airboneStack.ReturnHead() == nullptr) {
+		cout << "Loi" << endl;
+	}
+}
+static void ThrowedTrashLimitRect(SDL_Rect trashRect) {
+
+}
+static void ProjectileMove(float time) {
+	airboneStack.ProjectileCalXY(time, orgTrashCan, rioTrashCan, nrioTrashCan, eTrashCan, verticalHUD);
+	//test
+	Node* tempNode = airboneStack.ReturnHead();
+	if (tempNode == nullptr) {
+		return;
+	}
+}
+static void TrashDeleteCheck() {
+	Node* tempNode = airboneStack.ReturnHead();
+	while (tempNode != nullptr) {
+		if (reinterpret_cast<uintptr_t>(tempNode) == 0xDDDDDDDD || reinterpret_cast<uintptr_t>(tempNode) == 0x00000008) { std::cout << "Invalid tempNode detected!" << std::endl; return; }
+		if (tempNode->trash == nullptr) {
+			cout << "Khong co rac" << endl;
+			return;
+		}
+		SDL_Rect trashRect = tempNode->trash->GetRect();
+		if (trashRect.w == 0 && tempNode->isDisappeared) {
+			airboneStack.GetTrashInStack(tempNode);
+			return;
+		}
+		else if (trashRect.w != 0 && tempNode->isDisappeared) {
+			Trash* tempTrash = airboneStack.GetTrashInStack(tempNode);
+			int grid_index = CheckGridObjectIn(tempTrash->GetRect());
+			AddTrashToGrid(tempTrash, grid_index);
+		}
+		tempNode = tempNode->next;
+	}
+}
+static bool initAll() {
 	if (
 		!initGame() ||
 		!loadBackground() ||
@@ -493,9 +538,11 @@ int main(int argc, char* argv[]) {
 		!LoadAllTrash() ||
 		!inventoryBar.LoadInventoryBar(g_screen)
 		) {
-		return 0;
+		return false;
 	}
-//Set Up
+	return true;
+}
+static void SetUp() {
 	house.SetRect(HOUSE_POS_X, HOUSE_POS_Y, HOUSE_WIDTH, HOUSE_HEIGHT);
 	fence[0].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE1_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
 	fence[1].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE2_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
@@ -508,7 +555,20 @@ int main(int argc, char* argv[]) {
 	trees[0].SetRect(TOP_TREE_POS_X, TOP_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
 	trees[1].SetRect(MIDDLE_TREE_POS_X, MIDDLE_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
 	trees[2].SetRect(BOTTOM_TREE_POS_X, BOTTOM_TREE_POS_Y, LONG_TREE_WIDTH, LONG_TREE_HEIGHT);
+}
+int main(int argc, char* argv[]) {
+	int timeCount = 0;
+	timeCount++;
+	float timeCal = (float)timeCount/100;
+	//init
+	LoadMapGrid();
+	if (!initAll()) {
+		return 0;
+	}
+	//Set Up
+	SetUp();
 	//test
+	//inventory.AddTrashToInventory(redhood, mapGrid[3].objectsList.pHead->trash);
 	horizontal.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\horizontal.png");
 	vertical.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\vertical.png");
 	borderX1.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
@@ -520,10 +580,10 @@ int main(int argc, char* argv[]) {
 	GRIDX2.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
 	GRIDX3.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
 	GRIDX4.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
-	GRIDMAPBORDER();
 //running loop
 	bool running = true;
 	while (running) {
+	GRIDMAPBORDER();
 		SDL_PollEvent(&g_event);
 		if (g_event.key.keysym.sym == SDLK_ESCAPE) {
 			running = false;
@@ -604,16 +664,29 @@ int main(int argc, char* argv[]) {
 		if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_e && !inventory.IsFull()) {
 			CharacterCollectTrash();
 		}
+		if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_q && !inventory.IsEmpty()) {
+			CharacterThrowTrash();
+		}
+		if (!airboneStack.isEmpty()) {
+			ProjectileMove(timeCal);
+		}
+		if (!airboneStack.isEmpty()) {
+			TrashDeleteCheck();
+		}
 		BorderUpdate();
-		BorderShow();
+		//BorderShow();
 		//cap nhat stat
 		inventoryBar.InventoryBarRender(g_screen);
+		airboneStack.airboneStackShow(g_screen);
 		verticalHUD.SetSpeed(redhood.GetSpeed());
 		verticalHUD.RenderStat(g_screen, g_font);
 		inventory.InventoryShow(g_screen);
 		//RulerShow();
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
+		if (timeCount > 100) {
+			timeCount = 0;
+		}
 	}
 	close();
 	return 0;
