@@ -22,16 +22,16 @@ void AirboneStack::Push(Trash *trash, bool throwLeft) {
 	this->SetAppeared();
 	float timeToMaxHeight = 1.5;
 }
-void CalPoint(Node* node, TrashCan* trashCan, VerticalHUD &verticalHUD, TrashType trashCanType) {
+void CalPoint(Node* node, Bin* bin, VerticalHUD &verticalHUD, TrashType binType) {
 	SDL_Rect trashRect = node->trash->GetRect();
-	SDL_Rect trashCanRect = trashCan->GetRect();
-	if (SDL_HasIntersection(&trashRect, &trashCanRect)) {
+	SDL_Rect binRect = bin->GetRect();
+	if (SDL_HasIntersection(&trashRect, &binRect)) {
 		int trashPoint = node->trash->GetTrashPoint();
 		node->isDisappeared = true;
 		cout << static_cast<int>(node->trash->GetTrashType()) << "-";
-		cout << static_cast<int>(trashCanType) << endl;
+		cout << static_cast<int>(binType) << endl;
 		TrashType trashType = node->trash->GetTrashType();
-		if (trashCanType == trashType) {
+		if (binType == trashType) {
 			cout << "Giong" << endl;
 			int point = verticalHUD.GetPoint() + node->trash->GetTrashPoint();
 			verticalHUD.SetPoint(point);
@@ -46,8 +46,8 @@ void CalPoint(Node* node, TrashCan* trashCan, VerticalHUD &verticalHUD, TrashTyp
 	}
 }
 //them & de gan la ban goc chu khong tao copy//
-void AirboneStack::ProjectileCalXY(const float &time,OrgTrashCan &orgTrashCan,RIOTrashCan &rioTrashCan, NRIOTrashCan &nrioTrashCan, ETrashCan &eTrashCan, VerticalHUD& verticalHUD) {
-	cout << static_cast<int>(orgTrashCan.GetType()) << endl;
+void AirboneStack::ProjectileCalXY(const float &time,OrgBin &orgBin,RIOBin &rioBin, NRIOBin &nrioBin, EBin &eBin, VerticalHUD& verticalHUD) {
+	cout << static_cast<int>(orgBin.GetType()) << endl;
 	Node* temp = this->ReturnHead();
 	while (temp != nullptr) {
 		int _x0 = temp->throwPositionX;
@@ -60,16 +60,16 @@ void AirboneStack::ProjectileCalXY(const float &time,OrgTrashCan &orgTrashCan,RI
 		//y = y0 + v0*sin(a)*t + (1/2)g*t^2
 		float _xPos, _yPos;
 		if (!temp->throwLeft) {
-			_xPos = _x0 + 100 * cos(PI / 20) * temp->time;
+			_xPos = _x0 + 300 * cos(PI / 10) * temp->time;
 		}
 		else {
-			_xPos = _x0 - 100 * cos(PI / 20) * temp->time;
+			_xPos = _x0 - 300 * cos(PI / 10) * temp->time;
 		}
 		if (temp->time <= temp->timeToMaxHeight) {
-			_yPos = _y0 - 100 * temp->time * sin(PI / 12) - (1 / 2) - g * pow(temp->time, 2);
+			_yPos = _y0 - 300 * temp->time * sin(PI / 10) - (1 / 2) - g * pow(temp->time, 2);
 		}
 		else {
-			_yPos = _y0 - 100 * temp->time * sin(PI / 12) - (1 / 2) + g * pow(temp->time, 2);
+			_yPos = _y0 - 300 * temp->time * sin(PI / 10) - (1 / 2) + g * pow(temp->time, 2);
 		}
 		int setPosX = round(_xPos);
 		int setPosY = round(_yPos);
@@ -81,10 +81,10 @@ void AirboneStack::ProjectileCalXY(const float &time,OrgTrashCan &orgTrashCan,RI
 			temp->trash->SetRect(setPosX, setPosY, trashRect.w, trashRect.h);
 			temp->isDisappeared = true;
 		}
-		CalPoint(temp, &orgTrashCan, verticalHUD, orgTrashCan.GetType());
-		CalPoint(temp, &rioTrashCan, verticalHUD, rioTrashCan.GetType());
-		CalPoint(temp, &nrioTrashCan, verticalHUD, nrioTrashCan.GetType());
-		CalPoint(temp, &eTrashCan, verticalHUD, eTrashCan.GetType());
+		CalPoint(temp, &orgBin, verticalHUD, orgBin.GetType());
+		CalPoint(temp, &rioBin, verticalHUD, rioBin.GetType());
+		CalPoint(temp, &nrioBin, verticalHUD, nrioBin.GetType());
+		CalPoint(temp, &eBin, verticalHUD, eBin.GetType());
 		temp = temp->next;
 	}
 }

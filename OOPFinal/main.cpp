@@ -4,7 +4,7 @@
 #include "House.h"
 #include "Fence.h"
 #include "Tree.h"
-#include "TrashCan.h"
+#include "Bin.h"
 #include "HUD.h"
 #include "Trash.h"
 #include "MapGrid.h"
@@ -163,11 +163,11 @@ static void ShowTrees(int treeNum) {
 		trees[i].Render(g_screen, nullptr);
 	}
 }
-//TrashCan
-OrgTrashCan orgTrashCan;
-RIOTrashCan rioTrashCan;
-NRIOTrashCan nrioTrashCan;
-ETrashCan eTrashCan;
+//Bin
+OrgBin orgBin;
+RIOBin rioBin;
+NRIOBin nrioBin;
+EBin eBin;
 //MapGrid
 MapGrid mapGrid[6];
 static void LoadMapGrid() {
@@ -493,7 +493,7 @@ static void ThrowedTrashLimitRect(SDL_Rect trashRect) {
 
 }
 static void ProjectileMove(float time) {
-	airboneStack.ProjectileCalXY(time, orgTrashCan, rioTrashCan, nrioTrashCan, eTrashCan, verticalHUD);
+	airboneStack.ProjectileCalXY(time, orgBin, rioBin, nrioBin, eBin, verticalHUD);
 	//test
 	Node* tempNode = airboneStack.ReturnHead();
 	if (tempNode == nullptr) {
@@ -531,10 +531,10 @@ static bool initAll() {
 		!loadFence(4) ||
 		!loadvFence(3) ||
 		!loadTrees(3) ||
-		!orgTrashCan.LoadTrashCan(g_screen) ||
-		!rioTrashCan.LoadTrashCan(g_screen) ||
-		!nrioTrashCan.LoadTrashCan(g_screen) ||
-		!eTrashCan.LoadTrashCan(g_screen) ||
+		!orgBin.LoadBin(g_screen) ||
+		!rioBin.LoadBin(g_screen) ||
+		!nrioBin.LoadBin(g_screen) ||
+		!eBin.LoadBin(g_screen) ||
 		!LoadAllTrash() ||
 		!inventoryBar.LoadInventoryBar(g_screen)
 		) {
@@ -596,8 +596,8 @@ int main(int argc, char* argv[]) {
 		background.Render(g_screen, nullptr);
 		house.Render(g_screen, nullptr);
 		FenceShow(4);
-		orgTrashCan.Render(g_screen, nullptr);
-		nrioTrashCan.Render(g_screen, nullptr);
+		orgBin.Render(g_screen, nullptr);
+		nrioBin.Render(g_screen, nullptr);
 		ShowTrees(3);
 		vFence[2].Render(g_screen, nullptr);
 		redhood.HandleInput(g_screen, SDL_SCANCODE_A, SDL_SCANCODE_W, SDL_SCANCODE_D, SDL_SCANCODE_S);
@@ -651,14 +651,14 @@ int main(int argc, char* argv[]) {
 			ShowTrashInAllGrid();
 			redhood.ShowCharacter(g_screen);
 			vFenceShow(2);
-			rioTrashCan.Render(g_screen, nullptr);
-			eTrashCan.Render(g_screen, nullptr);
+			rioBin.Render(g_screen, nullptr);
+			eBin.Render(g_screen, nullptr);
 		}
 		else {
 			ShowTrashInAllGrid();
 			vFenceShow(2);
-			rioTrashCan.Render(g_screen, nullptr);
-			eTrashCan.Render(g_screen, nullptr);
+			rioBin.Render(g_screen, nullptr);
+			eBin.Render(g_screen, nullptr);
 			redhood.ShowCharacter(g_screen);
 		}
 		if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_e && !inventory.IsFull()) {
