@@ -9,15 +9,15 @@ typedef struct TrashProperties {
 enum class TrashType {
 	None = 0,
 	Organic = 1,
-	Reclyable = 2,
-	NonReclyable = 3,
+	Recyclable = 2,
+	NonRecyclable = 3,
 	Electronic = 4
 };
 enum class TrashSpecificType {
 	None,
 	BananaPeel, AppleCore, BigStick, SmallStick, RedApple, PurpleApple,
-	Can, GlassBottle, PapperBag, RubberDuck, RubberGloves,WaterBottle,
-	HouseHoldTrash, InsectSpray, PlasticBag, Sponge,
+	Can, GlassBottle, PapperBag, RubberDuck, RubberGloves,WaterBottle, PlasticBag,
+	HouseHoldTrash, InsectSpray, PaintBucket, Sponge,
 	Battery, ElectricCircuit, ElectricWire, LightBulb
 };
 class Trash:public BaseObject {
@@ -37,7 +37,6 @@ public:
 	TrashSpecificType GetTrashSpecificType() const;
 	bool LoadTrash(SDL_Renderer* screen);
 	bool operator==(Trash trash2);
-	void Disappear();
 };
 
 //properties stat of Trash

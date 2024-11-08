@@ -24,7 +24,7 @@ bool RIOBin::LoadBin(SDL_Renderer* screen) {
 	return true;
 }
 RIOBin::RIOBin() {
-	this->type = TrashType::Reclyable;
+	this->type = TrashType::Recyclable;
 }
 bool NRIOBin::LoadBin(SDL_Renderer* screen) {
 	if (!this->LoadImage(screen, "..\\assets\\bin\\Non-RecyclableInorganicBin.png")) {
@@ -35,7 +35,7 @@ bool NRIOBin::LoadBin(SDL_Renderer* screen) {
 	return true;
 }
 NRIOBin::NRIOBin() {
-	this->type = TrashType::NonReclyable;
+	this->type = TrashType::NonRecyclable;
 }
 bool EBin::LoadBin(SDL_Renderer* screen) {
 	if (!this->LoadImage(screen, "..\\assets\\bin\\E-wasteBin.png")) {

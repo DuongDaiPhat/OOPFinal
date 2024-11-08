@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseObject.h"
 
-
 class Tree : public BaseObject {
 protected:
 	bool type[3];

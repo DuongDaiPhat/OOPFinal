@@ -1,6 +1,6 @@
 ﻿#include "Character.h"
 #include "BaseFunction.h"
-#include "math.h"
+#include "cmath"
 
 const Uint8* pkey = SDL_GetKeyboardState(NULL);
 Character::Character() {

@@ -234,9 +234,10 @@ Trash papperBag[2];
 Trash rubberDuck[2];
 Trash rubberGloves[2];
 Trash waterBottle[2];
+Trash plasticBag[2];
 Trash houseHoldTrash[2];
 Trash insectSpray[2];
-Trash plasticBag[2];
+Trash paintBucket[2];
 Trash sponge[2];
 Trash battery[2];
 Trash electricCircuit[2];
@@ -252,16 +253,17 @@ bool static LoadAllTrash() {
 		smallStick[i] = Trash(TrashType::Organic, TrashSpecificType::SmallStick);
 		redApple[i] = Trash(TrashType::Organic, TrashSpecificType::RedApple);
 		purpleApple[i] = Trash(TrashType::Organic, TrashSpecificType::PurpleApple);
-		can[i] = Trash(TrashType::Reclyable, TrashSpecificType::Can);
-		glassBottle[i] = Trash(TrashType::Reclyable, TrashSpecificType::GlassBottle);
-		papperBag[i] = Trash(TrashType::Reclyable, TrashSpecificType::PapperBag);
-		rubberDuck[i] = Trash(TrashType::Reclyable, TrashSpecificType::RubberDuck);
-		rubberGloves[i] = Trash(TrashType::Reclyable, TrashSpecificType::RubberGloves);
-		waterBottle[i] = Trash(TrashType::Reclyable, TrashSpecificType::WaterBottle);
-		houseHoldTrash[i] = Trash(TrashType::NonReclyable, TrashSpecificType::HouseHoldTrash);
-		insectSpray[i] = Trash(TrashType::NonReclyable, TrashSpecificType::InsectSpray);
-		plasticBag[i] = Trash(TrashType::NonReclyable, TrashSpecificType::PlasticBag);
-		sponge[i] = Trash(TrashType::NonReclyable, TrashSpecificType::Sponge);
+		can[i] = Trash(TrashType::Recyclable, TrashSpecificType::Can);
+		glassBottle[i] = Trash(TrashType::Recyclable, TrashSpecificType::GlassBottle);
+		papperBag[i] = Trash(TrashType::Recyclable, TrashSpecificType::PapperBag);
+		rubberDuck[i] = Trash(TrashType::Recyclable, TrashSpecificType::RubberDuck);
+		rubberGloves[i] = Trash(TrashType::Recyclable, TrashSpecificType::RubberGloves);
+		waterBottle[i] = Trash(TrashType::Recyclable, TrashSpecificType::WaterBottle);
+		plasticBag[i] = Trash(TrashType::Recyclable, TrashSpecificType::PlasticBag);
+		houseHoldTrash[i] = Trash(TrashType::NonRecyclable, TrashSpecificType::HouseHoldTrash);
+		insectSpray[i] = Trash(TrashType::NonRecyclable, TrashSpecificType::InsectSpray);
+		paintBucket[i] = Trash(TrashType::NonRecyclable, TrashSpecificType::PaintBucket);
+		sponge[i] = Trash(TrashType::NonRecyclable, TrashSpecificType::Sponge);
 		battery[i] = Trash(TrashType::Electronic, TrashSpecificType::Battery);
 		electricCircuit[i] = Trash(TrashType::Electronic, TrashSpecificType::ElectricCircuit);
 		electricWire[i] = Trash(TrashType::Electronic, TrashSpecificType::ElectricWire);
@@ -350,6 +352,13 @@ bool static LoadAllTrash() {
 			grid_index = CheckGridObjectIn(waterBottle[i].GetRect());
 			AddTrashToGrid(&waterBottle[i], grid_index);
 		}
+		if (!plasticBag[i].LoadTrash(g_screen)) {
+			return false;
+		}
+		else {
+			grid_index = CheckGridObjectIn(plasticBag[i].GetRect());
+			AddTrashToGrid(&plasticBag[i], grid_index);
+		}
 		if (!houseHoldTrash[i].LoadTrash(g_screen)) {
 			return false;
 		}
@@ -364,12 +373,12 @@ bool static LoadAllTrash() {
 			grid_index = CheckGridObjectIn(insectSpray[i].GetRect());
 			AddTrashToGrid(&insectSpray[i], grid_index);
 		}
-		if (!plasticBag[i].LoadTrash(g_screen)) {
+		if (!paintBucket[i].LoadTrash(g_screen)) {
 			return false;
 		}
 		else {
-			grid_index = CheckGridObjectIn(plasticBag[i].GetRect());
-			AddTrashToGrid(&plasticBag[i], grid_index);
+			grid_index = CheckGridObjectIn(paintBucket[i].GetRect());
+			AddTrashToGrid(&paintBucket[i], grid_index);
 		}
 		if (!sponge[i].LoadTrash(g_screen)) {
 			return false;

@@ -167,6 +167,14 @@ bool Trash::LoadTrash(SDL_Renderer* screen){
 		this->SetRect(xPos, yPos, TINY_TRASH_WIDTH, BIG_TRASH_HEIGHT);
 		break;
 	}
+	case TrashSpecificType::PlasticBag: {
+		if (!this->LoadImage(screen, "..\\assets\\waste\\RecyclableInorganicWaste\\plasticbag.png")) {
+			cout << "Khong the load tui nhua" << endl;
+			return false;
+		}
+		this->SetRect(xPos, yPos, SMALL_TRASH_WIDTH, SMALL_TRASH_HEIGHT);
+		break;
+	}
 	case TrashSpecificType::HouseHoldTrash: {
 		if (!this->LoadImage(screen, "..\\assets\\waste\\Non-RecyclableOrganicWaste\\householdTrash.png")) {
 			cout << "Khong the load rac thai sinh hoat" << endl;
@@ -183,12 +191,12 @@ bool Trash::LoadTrash(SDL_Renderer* screen){
 		this->SetRect(xPos, yPos, TINY_TRASH_WIDTH, BIG_TRASH_HEIGHT);
 		break;
 	}
-	case TrashSpecificType::PlasticBag: {
-		if (!this->LoadImage(screen, "..\\assets\\waste\\Non-RecyclableOrganicWaste\\plasticBag.png")) {
-			cout << "Khong the load tui nhua" << endl;
+	case TrashSpecificType::PaintBucket: {
+		if (!this->LoadImage(screen, "..\\assets\\waste\\Non-RecyclableOrganicWaste\\paintBucket.png")) {
+			cout << "Khong the load thung son" << endl;
 			return false;
 		}
-		this->SetRect(xPos, yPos, SMALL_TRASH_WIDTH, SMALL_TRASH_HEIGHT);
+		this->SetRect(xPos, yPos, BIG_TRASH_WIDTH, BIG_TRASH_HEIGHT);
 		break;
 	}
 	case TrashSpecificType::Sponge: {
@@ -233,9 +241,6 @@ bool Trash::LoadTrash(SDL_Renderer* screen){
 	}
 	}
 	return true;
-}
-void Trash::Disappear() {
-
 }
 void Trash::TrashSetProperties() {
 	switch (specificType) {
@@ -305,6 +310,11 @@ void Trash::TrashSetProperties() {
 		properties.weight = SMALL_TRASH_WEIGHT;
 		break;
 	}
+	case TrashSpecificType::PlasticBag: {
+		properties.points = SMALL_TRASH_POINTS;
+		properties.weight = TINY_TRASH_WEIGHT;
+		break;
+	}
 	case TrashSpecificType::HouseHoldTrash: {
 		properties.points = BIG_TRASH_POINTS;
 		properties.weight = BIG_TRASH_WEIGHT;
@@ -315,9 +325,9 @@ void Trash::TrashSetProperties() {
 		properties.weight = NORMAL_TRASH_WEIGHT;
 		break;
 	}
-	case TrashSpecificType::PlasticBag: {
-		properties.points = SMALL_TRASH_POINTS;
-		properties.weight = TINY_TRASH_WEIGHT;
+	case TrashSpecificType::PaintBucket: {
+		properties.points = BIG_TRASH_POINTS;
+		properties.weight = BIG_TRASH_WEIGHT;
 		break;
 	}
 	case TrashSpecificType::Sponge:{
