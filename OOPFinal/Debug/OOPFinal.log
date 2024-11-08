@@ -1,2 +1,10 @@
-﻿  Trash.cpp
+﻿  AirBoneStack.cpp
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(64,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(67,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(72,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(75,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(79,60): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(82,60): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(84,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirBoneStack.cpp(85,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   OOPFinal.vcxproj -> D:\GameProject\OOPFinal\Debug\OOPFinal.exe

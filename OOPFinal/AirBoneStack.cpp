@@ -55,15 +55,25 @@ void AirboneStack::ProjectileCalXY(const float &time,OrgBin &orgBin,RIOBin &rioB
 		int stopPos = temp->stopPosition;
 		temp->time += time;
 		cout << temp->time;
-		int trashWeight = temp->trash->GetTrashWeight();
+		float trashWeight = static_cast<float>(temp->trash->GetTrashWeight());
 		//x = x0 + vo*cos(a)*t;
 		//y = y0 + v0*sin(a)*t + (1/2)g*t^2
 		float _xPos, _yPos;
 		if (!temp->throwLeft) {
-			_xPos = _x0 + 300 * cos(PI / 10) * temp->time;
+			if (trashWeight == 0) {
+				_xPos = _x0 + 300 * cos(PI / 10) * temp->time;
+			}
+			else {
+				_xPos = _x0 + (1 / trashWeight) * 300 * cos(PI / 10) * temp->time;
+			}
 		}
 		else {
-			_xPos = _x0 - 300 * cos(PI / 10) * temp->time;
+			if (trashWeight == 0) {
+				_xPos = _x0 - 300 * cos(PI / 10) * temp->time;
+			}
+			else {
+				_xPos = _x0 - (1/ trashWeight) * 300 * cos(PI / 10) * temp->time;
+			}
 		}
 		if (temp->time <= temp->timeToMaxHeight) {
 			_yPos = _y0 - 300 * temp->time * sin(PI / 10) - (1 / 2) - g * pow(temp->time, 2);
