@@ -44,7 +44,7 @@ typedef struct _Queue {
 	Node* pTail;
 }_Queue;
 class Queue {
-private:
+protected:
 	_Queue queue;
 public:
 	Queue();
