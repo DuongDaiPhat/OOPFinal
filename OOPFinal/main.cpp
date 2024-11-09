@@ -10,6 +10,55 @@
 #include "MapGrid.h"
 #include "AirboneQueue.h"
 
+//variables:
+//Background:
+BaseObject background;
+//VerticalHUD
+VerticalHUD verticalHUD;
+//InventoryBar
+InventoryBar inventoryBar;
+//Inventory
+Inventory inventory;
+//Character:
+Character redhood;
+//MapGrid
+MapGrid mapGrid[6];
+//Blocking Object
+Fence fence[4];
+Fence vFence[3];
+Tree trees[3];
+House house;
+//Bin
+OrgBin orgBin;
+RIOBin rioBin;
+NRIOBin nrioBin;
+EBin eBin;
+//Trash
+Trash bananaPeel[2];
+Trash appleCore[2];
+Trash bigStick[2];
+Trash smallStick[2];
+Trash redApple[2];
+Trash purpleApple[2];
+Trash can[2];
+Trash glassBottle[2];
+Trash papperBag[2];
+Trash rubberDuck[2];
+Trash rubberGloves[2];
+Trash waterBottle[2];
+Trash plasticBag[2];
+Trash houseHoldTrash[2];
+Trash insectSpray[2];
+Trash paintBucket[2];
+Trash sponge[2];
+Trash battery[2];
+Trash electricCircuit[2];
+Trash electricWire[2];
+Trash lightBulb[2];
+//AirboneQueue
+AirboneQueue airboneQueue;
+
+//Function:
 //init
 static bool createWindow() {
 	g_window = SDL_CreateWindow("Viu", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -54,7 +103,7 @@ static bool initGame() {
 		SDL_DestroyWindow(g_window);
 		return false;
 	}
-	if (TTF_Init() < 0 || !createFont()){
+	if (TTF_Init() < 0 || !createFont()) {
 		cout << "Khong the khoi tao font chu" << endl;
 		SDL_DestroyRenderer(g_screen);
 		SDL_DestroyWindow(g_window);
@@ -73,106 +122,24 @@ static void close() {
 	IMG_Quit();
 	SDL_Quit();
 }
-//Background:
-BaseObject background;
-static bool loadBackground() {
-	if (!background.LoadImage(g_screen,"..\\assets\\background\\FinalGameBG1.png")) {
-		cout << "Khong the tai hinh nen" << endl;
-		return false;
-	}
-	background.SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	return true;
-}
-//VerticalHUD
-VerticalHUD verticalHUD;
-//InventoryBar
-InventoryBar inventoryBar;
-//Inventory
-Inventory inventory;
-//Character:
-Character redhood;
-static bool loadRedHood() {
-	if (!redhood.LoadCharacterImage(g_screen, "..\\assets\\characterSpriteSheet\\RedHoodIdleRight.png")) {
-		cout << "Khong the tai nhna vat" << endl;
-		return false;
-	}
-	redhood.SetSpawn(242, 436);
-	return true;
-}
-//House
-House house;
-static bool loadHouse() {
-	if (!house.LoadImage(g_screen, "..\\assets\\other\\House.png")) {
-		cout << "Khong the tai anh nha" << endl;
-		return false;
-	}
-	return true;
-}
-//Fence
-Fence fence[4];
-Fence vFence[3];
-//Horizontal Fence
-static bool loadFence(int FenceNum) {
-	for (int i = 0; i < FenceNum; i++) {
-		if (!fence[i].LoadImage(g_screen, "..\\assets\\other\\FenceHorizontal.png")) {
-			cout << "Khong the tai anh hang rao thu" << i << endl;
-			return false;
-		}
-	}
-	return true;
-}
-static void FenceShow(int FenceNum) {
-	for (int i = 0; i < FenceNum; i++) {
-		fence[i].Render(g_screen, nullptr);
-	}
-}
-//vertical Fence
-static bool loadvFence(int FenceNum) {
-	for (int i = 0; i < FenceNum; i++) {
-		if (!vFence[i].LoadImage(g_screen, "..\\assets\\other\\FenceVertical.png")) {
-			cout << "Khong the tai anh hang rao ngang thu" << i << endl;
-			return false;
-		}
-		vFence[i].SetVertical();
-	}
-	return true;
-}
-static void loadVFenceBoundary(int FenceNum) {
-	for (int i = 0; i < FenceNum; i++) {
-		vFence[i].SetBoundary();
-	}
-}
-static void vFenceShow(int FenceNum) {
-	for (int i = 0; i < FenceNum; i++) {
-		vFence[i].Render(g_screen, nullptr);
-	}
-}
-//Tree
-Tree trees[3];
-static bool loadTrees(int treeNum) {
-	for (int i = 0; i < treeNum; i++) {
-		trees[i].setType(i + 1);
-		if (!trees[i].loadTree(g_screen)) {
-			return false;
-		}
-	}
-	return true;
-}
-static void ShowTrees(int treeNum) {
-	for (int i = 0; i < treeNum; i++) {
-		trees[i].Render(g_screen, nullptr);
-	}
-}
-//Bin
-OrgBin orgBin;
-RIOBin rioBin;
-NRIOBin nrioBin;
-EBin eBin;
-//MapGrid
-MapGrid mapGrid[6];
-static void LoadMapGrid() {
+//Working with Grid.
+bool check[6] = { false, false, false, false, false, false };
+static void CheckObjectInAllGrid(SDL_Rect objRect) {
 	for (int i = 0; i < 6; i++) {
-		mapGrid[i] = MapGrid(GRID_SIZE[i]);
+		if (SDL_HasIntersection(&GRID_SIZE[i], &objRect)) {
+			check[i] = true;
+		}
+		else {
+			check[i] = false;
+		}
+	}
+}
+static void AddTrashToGrid(Trash* trash, int gridNumber) {
+	if (gridNumber < 0 || gridNumber >= 6) {
+		cout << "Gia tri khong hop le" << endl;
+	}
+	else {
+		mapGrid[gridNumber].addTrashToMapGrid(trash);
 	}
 }
 static int CheckGridObjectIn(SDL_Rect objRect) {
@@ -196,54 +163,74 @@ static int CheckGridObjectIn(SDL_Rect objRect) {
 	}
 	return -1;
 }
-bool check[6] = { false, false, false, false, false, false };
-static void CheckObjectInAllGrid(SDL_Rect objRect) {
-	for (int i = 0; i < 6; i++) {
-		if (SDL_HasIntersection(&GRID_SIZE[i], &objRect)) {
-			check[i] = true;
-		}
-		else {
-			check[i] = false;
-		}
-	}
-}
-static void AddTrashToGrid(Trash* trash, int gridNumber) {
-	if (gridNumber < 0 || gridNumber >= 6) {
-		cout << "Gia tri khong hop le" << endl;
-	}
-	else {
-		mapGrid[gridNumber].addTrashToMapGrid(trash);
-	}
-}
 
 static void ShowTrashInAllGrid() {
 	for (int i = 0; i < 6; i++) {
 		mapGrid[i].showTrashInGrid(g_screen);
 	}
 }
-//Trash
-Trash bananaPeel[2];
-Trash appleCore[2];
-Trash bigStick[2];
-Trash smallStick[2];
-Trash redApple[2];
-Trash purpleApple[2];
-Trash can[2];
-Trash glassBottle[2];
-Trash papperBag[2];
-Trash rubberDuck[2];
-Trash rubberGloves[2];
-Trash waterBottle[2];
-Trash plasticBag[2];
-Trash houseHoldTrash[2];
-Trash insectSpray[2];
-Trash paintBucket[2];
-Trash sponge[2];
-Trash battery[2];
-Trash electricCircuit[2];
-Trash electricWire[2];
-Trash lightBulb[2];
-
+//Load
+static bool loadBackground() {
+	if (!background.LoadImage(g_screen,"..\\assets\\background\\FinalGameBG1.png")) {
+		cout << "Khong the tai hinh nen" << endl;
+		return false;
+	}
+	background.SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	return true;
+}
+static bool loadRedHood() {
+	if (!redhood.LoadCharacterImage(g_screen, "..\\assets\\characterSpriteSheet\\RedHoodIdleRight.png")) {
+		cout << "Khong the tai nhna vat" << endl;
+		return false;
+	}
+	redhood.SetSpawn(242, 436);
+	return true;
+}
+static bool loadHouse() {
+	if (!house.LoadImage(g_screen, "..\\assets\\other\\House.png")) {
+		cout << "Khong the tai anh nha" << endl;
+		return false;
+	}
+	return true;
+}
+static bool loadFence(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		if (!fence[i].LoadImage(g_screen, "..\\assets\\other\\FenceHorizontal.png")) {
+			cout << "Khong the tai anh hang rao thu" << i << endl;
+			return false;
+		}
+	}
+	return true;
+}
+static bool loadvFence(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		if (!vFence[i].LoadImage(g_screen, "..\\assets\\other\\FenceVertical.png")) {
+			cout << "Khong the tai anh hang rao ngang thu" << i << endl;
+			return false;
+		}
+		vFence[i].SetVertical();
+	}
+	return true;
+}
+static void loadVFenceBoundary(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		vFence[i].SetBoundary();
+	}
+}
+static bool loadTrees(int treeNum) {
+	for (int i = 0; i < treeNum; i++) {
+		trees[i].setType(i + 1);
+		if (!trees[i].loadTree(g_screen)) {
+			return false;
+		}
+	}
+	return true;
+}
+static void LoadMapGrid() {
+	for (int i = 0; i < 6; i++) {
+		mapGrid[i] = MapGrid(GRID_SIZE[i]);
+	}
+}
 bool static LoadAllTrash() {
 	int grid_index;
 	for (int i = 0; i < TRASH_QUANTITIES; i++) {
@@ -418,49 +405,22 @@ bool static LoadAllTrash() {
 	}
 	return true;
 }
-//temp
-BaseObject horizontal;
-BaseObject vertical;
-BaseObject borderX1;
-BaseObject borderX2;
-BaseObject borderY1;
-BaseObject borderY2;
-
-BaseObject GRID_BORDER_Y;
-BaseObject GRIDX1, GRIDX2, GRIDX3, GRIDX4;
-static void RulerShow() {
-	vertical.Render(g_screen, nullptr);
-	horizontal.Render(g_screen, nullptr);
+//show
+static void FenceShow(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		fence[i].Render(g_screen, nullptr);
+	}
 }
-static void BorderUpdate() {
-	SDL_Rect charRect = redhood.GetRealRect();
-	borderX1.SetRect(charRect.x, charRect.y, charRect.w, 1);
-	borderX2.SetRect(charRect.x, charRect.y + charRect.h, charRect.w, 1);
-	borderY1.SetRect(charRect.x, charRect.y, 1, charRect.h);
-	borderY2.SetRect(charRect.x + charRect.w, charRect.y, 1, charRect.h);
+static void vFenceShow(int FenceNum) {
+	for (int i = 0; i < FenceNum; i++) {
+		vFence[i].Render(g_screen, nullptr);
+	}
 }
-static void GRIDMAPBORDER() {
-	GRID_BORDER_Y.SetRect(100, 576, 1920, 1);
-	GRIDX1.SetRect(GRID1_SIZE.x + GRID1_SIZE.w, 0, 1, GRID1_SIZE.h);
-	GRIDX2.SetRect(GRID2_SIZE.x + GRID1_SIZE.w, 0, 1, GRID2_SIZE.h);
-	GRIDX3.SetRect(GRID4_SIZE.x + GRID4_SIZE.w, GRID4_SIZE.y, 1, GRID4_SIZE.h);
-	GRIDX4.SetRect(GRID5_SIZE.x + GRID5_SIZE.w, GRID5_SIZE.y, 1, GRID5_SIZE.h);
+static void ShowTrees(int treeNum) {
+	for (int i = 0; i < treeNum; i++) {
+		trees[i].Render(g_screen, nullptr);
+	}
 }
-static void BorderShow() {
-	borderX1.Render(g_screen, nullptr);
-	borderX2.Render(g_screen, nullptr);
-	borderY1.Render(g_screen, nullptr);
-	borderY2.Render(g_screen, nullptr);
-	GRID_BORDER_Y.Render(g_screen, nullptr);
-	GRIDX1.Render(g_screen, nullptr);
-	GRIDX2.Render(g_screen, nullptr);
-	GRIDX3.Render(g_screen, nullptr);
-	GRIDX4.Render(g_screen, nullptr);
-}
-//airbone stack
-//AirboneStack airboneStack;
-AirboneQueue airboneQueue;
-
 //combined function//
 static void CharacterCollectTrash() {
 	SDL_Rect charRect = redhood.GetRealRect();
@@ -524,6 +484,7 @@ static void TrashDeleteCheck() {
 		AddTrashToGrid(tempTrash, grid_index);
 	}
 }
+//Main function:
 static bool initAll() {
 	if (
 		!initGame() ||
@@ -559,7 +520,99 @@ static void SetUp() {
 	trees[1].SetRect(MIDDLE_TREE_POS_X, MIDDLE_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
 	trees[2].SetRect(BOTTOM_TREE_POS_X, BOTTOM_TREE_POS_Y, LONG_TREE_WIDTH, LONG_TREE_HEIGHT);
 }
+static void FenceBlock() {
+	for (int i = 0; i < 4; i++) {
+		SDL_Rect temp = redhood.GetRealRect();
+		int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
+		int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
+		if (redhood.CheckCollision(newX, temp.y, temp.w, temp.h, fence[i].GetRect())) {
+			redhood.SetXVelocity(0);
+		}
+		if (redhood.CheckCollision(temp.x, newY, temp.w, temp.h, fence[i].GetRect())) {
+			redhood.SetYVelocity(0);
+		}
+	}
+	//VFenceBlock
+	for (int i = 0; i < 3; i++) {
+		SDL_Rect temp = redhood.GetRealRect();
+		int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
+		int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
+		if (vFence[i].IsCollisionCheck(newX, temp.y, temp.w, temp.h)) {
+			redhood.SetXVelocity(0);
+		}
+		if (vFence[i].IsCollisionCheck(temp.x, newY, temp.w, temp.h)) {
+			redhood.SetYVelocity(0);
+		}
+	}
+}
+static void HouseBlock() {
+	SDL_Rect temp = redhood.GetRealRect();
+	if (temp.x < 650 && temp.y < 420) {
+		double yVelocity = redhood.GetYVelocity();
+		if (yVelocity < 0) {
+			redhood.SetYVelocity(0);
+		}
+	}
+}
+static void TreeBlock() {
+	for (int i = 0; i < 3; i++) {
+		SDL_Rect temp = redhood.GetRealRect();
+		int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
+		int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
+		if (redhood.CheckCollision(newX, temp.y, temp.w, temp.h, trees[i].GetRect())) {
+			redhood.SetXVelocity(0);
+		}
+		if (redhood.CheckCollision(temp.x, newY, temp.w, temp.h, trees[i].GetRect())) {
+			redhood.SetYVelocity(0);
+		}
+	}
+}
+static void ThreeDVision() {
+	SDL_Rect RedHoodPos = redhood.GetRect();
+	if (RedHoodPos.y <= 702) {
+		ShowTrashInAllGrid();
+		redhood.ShowCharacter(g_screen);
+		vFenceShow(2);
+		rioBin.Render(g_screen, nullptr);
+		eBin.Render(g_screen, nullptr);
+	}
+	else {
+		ShowTrashInAllGrid();
+		vFenceShow(2);
+		rioBin.Render(g_screen, nullptr);
+		eBin.Render(g_screen, nullptr);
+		redhood.ShowCharacter(g_screen);
+	}
+}
+static void RenderALL() {
+	background.Render(g_screen, nullptr);
+	house.Render(g_screen, nullptr);
+	FenceShow(4);
+	orgBin.Render(g_screen, nullptr);
+	nrioBin.Render(g_screen, nullptr);
+	ShowTrees(3);
+	vFence[2].Render(g_screen, nullptr);
+	inventoryBar.InventoryBarRender(g_screen);
+	verticalHUD.SetSpeed(redhood.GetSpeed());
+	verticalHUD.RenderStat(g_screen, g_font);
+	inventory.InventoryShow(g_screen);
+	ThreeDVision();
+	airboneQueue.AirboneQueueShow(g_screen);
+}
+static void CharacterAction(float timeCal) {
+	redhood.Move();
+	if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_e && !inventory.IsFull()) {
+		CharacterCollectTrash();
+	}
+	if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_q && !inventory.IsEmpty()) {
+		CharacterThrowTrash();
+	}
+	if (!airboneQueue.isEmpty()) {
+		ProjectileMove(timeCal);
+	}
+}
 int main(int argc, char* argv[]) {
+	//time.
 	int timeCount = 0;
 	timeCount++;
 	float timeCal = (float)timeCount/100;
@@ -570,23 +623,10 @@ int main(int argc, char* argv[]) {
 	}
 	//Set Up
 	SetUp();
-	//test
-	//inventory.AddTrashToInventory(redhood, mapGrid[3].objectsList.pHead->trash);
-	horizontal.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\horizontal.png");
-	vertical.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\vertical.png");
-	borderX1.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
-	borderX2.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
-	borderY1.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderY.png");
-	borderY2.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderY.png");
-	GRID_BORDER_Y.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderY.png");
-	GRIDX1.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
-	GRIDX2.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
-	GRIDX3.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
-	GRIDX4.LoadImage(g_screen, "D:\\GameProject\\OOPFinal\\assets\\BorderX.png");
-//running loop
+	//running loop
 	bool running = true;
 	while (running) {
-	GRIDMAPBORDER();
+		//press ESC to exist
 		SDL_PollEvent(&g_event);
 		if (g_event.key.keysym.sym == SDLK_ESCAPE) {
 			running = false;
@@ -596,93 +636,20 @@ int main(int argc, char* argv[]) {
 		}
 		//Render
 		SDL_RenderClear(g_screen);
-		background.Render(g_screen, nullptr);
-		house.Render(g_screen, nullptr);
-		FenceShow(4);
-		orgBin.Render(g_screen, nullptr);
-		nrioBin.Render(g_screen, nullptr);
-		ShowTrees(3);
-		vFence[2].Render(g_screen, nullptr);
+		RenderALL();
+		//Movement Input
 		redhood.HandleInput(g_screen, SDL_SCANCODE_A, SDL_SCANCODE_W, SDL_SCANCODE_D, SDL_SCANCODE_S);
-		//Fence Block
-		for (int i = 0; i < 4; i++) {
-			SDL_Rect temp = redhood.GetRealRect();
-			int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
-			int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
-			if (redhood.CheckCollision(newX, temp.y, temp.w, temp.h, fence[i].GetRect())) {
-				redhood.SetXVelocity(0);
-			}
-			if (redhood.CheckCollision(temp.x, newY, temp.w, temp.h, fence[i].GetRect())) {
-				redhood.SetYVelocity(0);
-			}
-		}
-		//VFenceBlock
-		for (int i = 0; i < 3; i++) {
-			SDL_Rect temp = redhood.GetRealRect();
-			int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
-			int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
-			if (vFence[i].IsCollisionCheck(newX, temp.y, temp.w, temp.h)) {
-				redhood.SetXVelocity(0);
-			}
-			if (vFence[i].IsCollisionCheck(temp.x, newY, temp.w, temp.h)) {
-				redhood.SetYVelocity(0);
-			}
-		}
+		//FenceBlock
+		FenceBlock();
 		//House Block
-		SDL_Rect temp = redhood.GetRealRect();
-		if (temp.x < 650 && temp.y < 420) {
-			double yVelocity = redhood.GetYVelocity();
-			if (yVelocity < 0) {
-				redhood.SetYVelocity(0);
-			}
-		}
+		HouseBlock();
 		//Tree block
-		for (int i = 0; i < 3; i++) {
-			SDL_Rect temp = redhood.GetRealRect();
-			int newX = temp.x + static_cast<int>(redhood.GetXVelocity());
-			int newY = temp.y + static_cast<int>(redhood.GetYVelocity());
-			if (redhood.CheckCollision(newX, temp.y, temp.w, temp.h, trees[i].GetRect())) {
-				redhood.SetXVelocity(0);
-			}
-			if(redhood.CheckCollision(temp.x, newY, temp.w, temp.h, trees[i].GetRect())){
-				redhood.SetYVelocity(0);
-			}
-		}
-		redhood.Move();
-		SDL_Rect RedHoodPos = redhood.GetRect();
-		if (RedHoodPos.y <= 702) {
-			ShowTrashInAllGrid();
-			redhood.ShowCharacter(g_screen);
-			vFenceShow(2);
-			rioBin.Render(g_screen, nullptr);
-			eBin.Render(g_screen, nullptr);
-		}
-		else {
-			ShowTrashInAllGrid();
-			vFenceShow(2);
-			rioBin.Render(g_screen, nullptr);
-			eBin.Render(g_screen, nullptr);
-			redhood.ShowCharacter(g_screen);
-		}
-		if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_e && !inventory.IsFull()) {
-			CharacterCollectTrash();
-		}
-		if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_q && !inventory.IsEmpty()) {
-			CharacterThrowTrash();
-		}
-		if (!airboneQueue.isEmpty()) {
-			ProjectileMove(timeCal);
-		}
-		//BorderUpdate();
-		//BorderShow();
-		//cap nhat stat
-		inventoryBar.InventoryBarRender(g_screen);
-		airboneQueue.AirboneQueueShow(g_screen);
-		verticalHUD.SetSpeed(redhood.GetSpeed());
-		verticalHUD.RenderStat(g_screen, g_font);
-		inventory.InventoryShow(g_screen);
-		//RulerShow();
+		TreeBlock();
+		//Charater Action
+		CharacterAction(timeCal);
+		//Show Render
 		SDL_RenderPresent(g_screen);
+		//Reset
 		redhood.ResetVelocity();
 		if (!airboneQueue.isEmpty()) {
 			TrashDeleteCheck();
