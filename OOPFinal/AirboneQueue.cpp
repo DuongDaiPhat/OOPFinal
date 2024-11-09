@@ -10,7 +10,7 @@ void AirboneQueue::GetInfomationForCal(SDL_Rect charRect) {
 	this->x0 = charRect.x + 30;
 	this->y0 = charRect.y + 50;
 	this->H = charRect.h;
-	this->groundPosY = charRect.y + charRect.h - 55;
+	this->groundPosY = charRect.y + charRect.h - 60;
 }
 void AirboneQueue::EnQueue(Trash* trash, bool throwLeft) {
 	this->Queue::EnQueue(trash);
@@ -20,7 +20,7 @@ void AirboneQueue::EnQueue(Trash* trash, bool throwLeft) {
 	this->SetTime(0);
 	this->SetStopPosition(groundPosY);
 	this->SetAppeared();
-	float timeToMaxHeight = 1.5;
+	float timeToMaxHeight = 0.1;
 }
 void CalPoint(Node* node, Bin* bin, VerticalHUD& verticalHUD, TrashType binType) {
 	SDL_Rect trashRect = node->trash->GetRect();
@@ -44,7 +44,7 @@ void CalPoint(Node* node, Bin* bin, VerticalHUD& verticalHUD, TrashType binType)
 		}
 	}
 }
-void makeCoordinateValid(int &posX, int posY, SDL_Rect trashRect) {
+static void makeCoordinateValid(int &posX, int posY, SDL_Rect trashRect) {
 	if (posY <= 440) {
 		if (posX <= 770) {
 			posX = trashRect.x;
