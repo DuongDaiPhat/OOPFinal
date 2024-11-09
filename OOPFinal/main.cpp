@@ -8,7 +8,7 @@
 #include "HUD.h"
 #include "Trash.h"
 #include "MapGrid.h"
-#include "AirBoneStack.h"
+#include "AirboneQueue.h"
 
 //init
 static bool createWindow() {
@@ -440,7 +440,7 @@ static void BorderUpdate() {
 	borderY2.SetRect(charRect.x + charRect.w, charRect.y, 1, charRect.h);
 }
 static void GRIDMAPBORDER() {
-	GRID_BORDER_Y.SetRect(100, inventory.GetInventoryPresentY(), 100, 1);
+	GRID_BORDER_Y.SetRect(100, 576, 1920, 1);
 	GRIDX1.SetRect(GRID1_SIZE.x + GRID1_SIZE.w, 0, 1, GRID1_SIZE.h);
 	GRIDX2.SetRect(GRID2_SIZE.x + GRID1_SIZE.w, 0, 1, GRID2_SIZE.h);
 	GRIDX3.SetRect(GRID4_SIZE.x + GRID4_SIZE.w, GRID4_SIZE.y, 1, GRID4_SIZE.h);
@@ -458,7 +458,8 @@ static void BorderShow() {
 	GRIDX4.Render(g_screen, nullptr);
 }
 //airbone stack
-AirboneStack airboneStack;
+//AirboneStack airboneStack;
+AirboneQueue airboneQueue;
 
 //combined function//
 static void CharacterCollectTrash() {
@@ -470,7 +471,7 @@ static void CharacterCollectTrash() {
 		}
 		int grid_index = i;
 		Node* temp = mapGrid[grid_index].objectsList.pHead;
-		if (grid_index == 0 || temp == nullptr || inventory.IsFull()) {
+		if (temp == nullptr || inventory.IsFull()) {
 			continue;
 		}
 		while (temp != nullptr) {
@@ -492,42 +493,35 @@ static void CharacterThrowTrash() {
 		cout << "Khong co rac de nem" << endl;
 		return;
 	}
-	airboneStack.GetInfomationForCal(redhood.GetRealRect());
-	airboneStack.Push(tempTrash, redhood.IsFacingLeft());
-	if (airboneStack.ReturnHead() == nullptr) {
+	airboneQueue.GetInfomationForCal(redhood.GetRealRect());
+	airboneQueue.EnQueue(tempTrash, redhood.IsFacingLeft());
+	if (airboneQueue.ReturnHead() == nullptr) {
 		cout << "Loi" << endl;
 	}
 }
-static void ThrowedTrashLimitRect(SDL_Rect trashRect) {
-
-}
 static void ProjectileMove(float time) {
-	airboneStack.ProjectileCalXY(time, orgBin, rioBin, nrioBin, eBin, verticalHUD);
+	airboneQueue.ProjectileCalXY(time, orgBin, rioBin, nrioBin, eBin, verticalHUD);
 	//test
-	Node* tempNode = airboneStack.ReturnHead();
+	Node* tempNode = airboneQueue.ReturnHead();
 	if (tempNode == nullptr) {
 		return;
 	}
 }
 static void TrashDeleteCheck() {
-	Node* tempNode = airboneStack.ReturnHead();
-	while (tempNode != nullptr) {
-		if (reinterpret_cast<uintptr_t>(tempNode) == 0xDDDDDDDD || reinterpret_cast<uintptr_t>(tempNode) == 0x00000008) { std::cout << "Invalid tempNode detected!" << std::endl; return; }
-		if (tempNode->trash == nullptr) {
-			cout << "Khong co rac" << endl;
-			return;
-		}
-		SDL_Rect trashRect = tempNode->trash->GetRect();
-		if (trashRect.w == 0 && tempNode->isDisappeared) {
-			airboneStack.GetTrashInStack(tempNode);
-			return;
-		}
-		else if (trashRect.w != 0 && tempNode->isDisappeared) {
-			Trash* tempTrash = airboneStack.GetTrashInStack(tempNode);
-			int grid_index = CheckGridObjectIn(tempTrash->GetRect());
-			AddTrashToGrid(tempTrash, grid_index);
-		}
-		tempNode = tempNode->next;
+	Node* tempNode = airboneQueue.ReturnHead();
+	if (tempNode->trash == nullptr) {
+		cout << "Khong co rac" << endl;
+		return;
+	}
+	SDL_Rect trashRect = tempNode->trash->GetRect();
+	if (trashRect.w == 0 && tempNode->isDisappeared) {
+		airboneQueue.DeQueue();
+		return;
+	}
+	else if (trashRect.w != 0 && tempNode->isDisappeared) {
+		Trash* tempTrash = airboneQueue.DeQueue();
+		int grid_index = CheckGridObjectIn(tempTrash->GetRect());
+		AddTrashToGrid(tempTrash, grid_index);
 	}
 }
 static bool initAll() {
@@ -636,7 +630,7 @@ int main(int argc, char* argv[]) {
 		}
 		//House Block
 		SDL_Rect temp = redhood.GetRealRect();
-		if (temp.x < 650 && temp.y < 395) {
+		if (temp.x < 650 && temp.y < 420) {
 			double yVelocity = redhood.GetYVelocity();
 			if (yVelocity < 0) {
 				redhood.SetYVelocity(0);
@@ -676,23 +670,23 @@ int main(int argc, char* argv[]) {
 		if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_q && !inventory.IsEmpty()) {
 			CharacterThrowTrash();
 		}
-		if (!airboneStack.isEmpty()) {
+		if (!airboneQueue.isEmpty()) {
 			ProjectileMove(timeCal);
 		}
-		if (!airboneStack.isEmpty()) {
-			TrashDeleteCheck();
-		}
-		BorderUpdate();
+		//BorderUpdate();
 		//BorderShow();
 		//cap nhat stat
 		inventoryBar.InventoryBarRender(g_screen);
-		airboneStack.airboneStackShow(g_screen);
+		airboneQueue.AirboneQueueShow(g_screen);
 		verticalHUD.SetSpeed(redhood.GetSpeed());
 		verticalHUD.RenderStat(g_screen, g_font);
 		inventory.InventoryShow(g_screen);
 		//RulerShow();
 		SDL_RenderPresent(g_screen);
 		redhood.ResetVelocity();
+		if (!airboneQueue.isEmpty()) {
+			TrashDeleteCheck();
+		}
 		if (timeCount > 100) {
 			timeCount = 0;
 		}

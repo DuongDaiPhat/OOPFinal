@@ -352,7 +352,7 @@ void Trash::TrashSetProperties() {
 	}
 	case TrashSpecificType::LightBulb: {
 		properties.points = NORMAL_TRASH_POINTS;
-		properties.weight = NORMAL_TRASH_WEIGHT;
+		properties.weight = HUGE_TRASH_WEIGHT;
 		break;
 	}
 	}

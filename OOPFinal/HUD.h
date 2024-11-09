@@ -25,7 +25,6 @@ private:
 public:
 	bool LoadInventoryBar(SDL_Renderer* screen);
 	void InventoryBarRender(SDL_Renderer* screen);
-	friend class Inventory;
 };
 
 class Inventory{
@@ -48,5 +47,5 @@ public:
 	//test
 	int GetInventoryPresentY() const;
 	friend class InventoryBar;
-	friend class Character;
+	friend class Character;	
 };

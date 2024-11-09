@@ -36,7 +36,7 @@
     <ClCompile Include="Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TrashCan.cpp">
+    <ClCompile Include="Bin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Trash.cpp">
@@ -51,7 +51,7 @@
     <ClCompile Include="DataStructure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirBoneStack.cpp">
+    <ClCompile Include="AirboneQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,7 +77,7 @@
     <ClInclude Include="Tree.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrashCan.h">
+    <ClInclude Include="Bin.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Trash.h">
@@ -92,7 +92,7 @@
     <ClInclude Include="DataStructure.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirBoneStack.h">
+    <ClInclude Include="AirboneQueue.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

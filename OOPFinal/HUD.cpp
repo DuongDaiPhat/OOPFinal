@@ -124,6 +124,9 @@ void Inventory::AddTrashToInventory(Character& character,Trash* trash) {
 		}
 		int trashWeight = trash->GetTrashWeight();
 		character.charSpeed -= trashWeight;
+		if (character.charSpeed <= 0) {
+			character.charSpeed = 0;
+		}
 
 		trash->SetRect(inventoryPosX, inventoryPresentY - newTrashHeight, newTrashWidth, newTrashHeight);
 		trashInInventory.Push(trash);
@@ -144,7 +147,7 @@ Trash* Inventory::GetTrashFromInventory(Character &character) {
 	}
 	return trash;
 }
-void Inventory::InventoryShow(SDL_Renderer* screen) const{
+void Inventory::InventoryShow(SDL_Renderer* screen) const{	
 	Node* temp = trashInInventory.stack.pHead;
 	while (temp != nullptr) {
 		temp->trash->Render(screen, nullptr);

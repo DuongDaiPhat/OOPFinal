@@ -49,8 +49,10 @@ void DeleteNode(List& list, Trash* trash) {
 			if (presentNode->trash == trash) {
 				Node* del = presentNode;
 				prevNode->next = presentNode->next;
+				if (presentNode == list.pTail) {
+					list.pTail = prevNode;
+				}
 				delete del;
-				del = nullptr;
 				break;
 			}
 			prevNode = presentNode;
@@ -125,114 +127,140 @@ void Stack::DeleteNodeStack(Node* node) {
 		}
 	}
 }
-void Stack::SetTime(const float &time = 0) {
-	if (time >= 0) {
-		this->stack.pHead->time = time;
-	}
-}
-void Stack::SetThrowingPosX(const int& x) {
-	if (stack.pHead != nullptr) {
-		this->stack.pHead->throwPositionX = x;
-	}
-}
-void Stack::SetThrowingPosY(const int& y) {
-	if (stack.pHead != nullptr) {
-		this->stack.pHead->throwPositionY = y;
-	}
-}
-void Stack::SetStopPosition(const int& stopPosition) {
-	if (stack.pHead != nullptr) {
-		this->stack.pHead->stopPosition = stopPosition;
-	}
-}
-void Stack::SetDisappeared() {
-	if (stack.pHead != nullptr) {
-		this->stack.pHead->isDisappeared = true;
-	}
-}
-void Stack::SetAppeared() {
-	if (stack.pHead != nullptr) {
-		this->stack.pHead->isDisappeared = false;
-	}
-}
-void Stack::SetTimeToMaxHeight(const float& Mtime) {
-	if (stack.pHead != nullptr) {
-		this->stack.pHead->timeToMaxHeight = Mtime;
-	}
-}
-float Stack::GetTime() const{
-	if (stack.pHead != nullptr) {
-		return this->stack.pHead->time;
-	}
-	return 0;
-}
-int Stack::GetThrowingPosX() const {
-	if (stack.pHead != nullptr) {
-		return this->stack.pHead->throwPositionX;
-	}
-	return 0;
-}
-int Stack::GetThrowingPosY()const {
-	if (stack.pHead != nullptr) {
-		return this->stack.pHead->throwPositionY;
-	}
-	return 0;
-}
-int Stack::GetStopPosition() const {
-	if (stack.pHead != nullptr) {
-		return this->stack.pHead->stopPosition;
-	}
-	return 0;
-}
-bool Stack::IsDisappear(Node* node) const {
-	return node->isDisappeared;
-}
-void Stack::SetThrowLeft(bool check) {
-	if (check == true) {
-		this->stack.pHead->throwLeft = true;
-	}
-	else {
-		this->stack.pHead->throwLeft = false;
-	}
-}
-float Stack::GetTimeToMaxHeight()const {
-	if (stack.pHead != nullptr) {
-		return this->stack.pHead->timeToMaxHeight;
-	}
-	return 0;
-}
-bool Stack::IsThrowLeft()const {
-	return this->stack.pHead->throwLeft;
-}
 Node* Stack::ReturnHead() const {
 	Node* temp = this->stack.pHead;
 	return temp;
 }
-Trash* Stack::GetTrashInStack(Node* node) {
-	if (stack.pHead == nullptr) {
-		cout << "Stack rong" << endl;
-		return nullptr;
-	}
-	if (stack.pHead == node) {
-		Node* del = stack.pHead;
-		Trash* getTrash = stack.pHead->trash;
-		stack.pHead = stack.pHead->next;
+
+void InitQueue(_Queue& queue) {
+	queue.pHead = queue.pTail = nullptr;
+}
+void DeleteQueue(_Queue& queue) {
+	while (queue.pHead != queue.pTail) {
+		Node* del = queue.pHead;
+		queue.pHead = queue.pHead->next;
 		delete del;
 		del = nullptr;
-		return getTrash;
+	}
+	delete queue.pHead;
+	queue.pHead = queue.pTail = nullptr;
+}
+Queue::Queue() {
+	InitQueue(queue);
+}
+Queue::~Queue() {
+	DeleteQueue(queue);
+}
+void Queue::EnQueue(Trash* trash) {
+	Node* temp = CreateNode(trash);
+	if (temp == nullptr) {
+		cout << "Khong du bo nho" << endl;
+		return;
+	}
+	if (queue.pHead == nullptr || queue.pTail == nullptr) {
+		queue.pHead = queue.pTail = temp;
 	}
 	else {
-		Node* prev = stack.pHead;
-		Node* del = stack.pHead->next;
-		while (del != nullptr) {
-			if (del == node) {
-				Trash* getTrash = del->trash;
-				prev->next = del->next;
-				delete del;
-				del = nullptr;
-				return getTrash;
-			}
-			del = del->next;
+		queue.pTail->next = temp;
+		queue.pTail = temp;
+	}
+}
+void Queue::SetTime(const float& time = 0) {
+	if (time >= 0) {
+		this->queue.pTail->time = time;
+	}
+}
+void Queue::SetThrowingPosX(const int& x) {
+	if (queue.pTail != nullptr) {
+		this->queue.pTail->throwPositionX = x;
+	}
+}
+void Queue::SetThrowingPosY(const int& y) {
+	if (queue.pTail != nullptr) {
+		this->queue.pTail->throwPositionY = y;
+	}
+}
+void Queue::SetStopPosition(const int& stopPosition) {
+	if (queue.pTail != nullptr) {
+		this->queue.pTail->stopPosition = stopPosition;
+	}
+}
+void Queue::SetDisappeared() {
+	if (queue.pTail != nullptr) {
+		this->queue.pTail->isDisappeared = true;
+	}
+}
+void Queue::SetAppeared() {
+	if (queue.pTail != nullptr) {
+		this->queue.pTail->isDisappeared = false;
+	}
+}
+void Queue::SetTimeToMaxHeight(const float& Mtime) {
+	if (queue.pTail != nullptr) {
+		this->queue.pTail->timeToMaxHeight = Mtime;
+	}
+}
+float Queue::GetTime() const {
+	if (queue.pTail != nullptr) {
+		return this->queue.pTail->time;
+	}
+	return 0;
+}
+int Queue::GetThrowingPosX() const {
+	if (queue.pTail != nullptr) {
+		return this->queue.pTail->throwPositionX;
+	}
+	return 0;
+}
+int Queue::GetThrowingPosY()const {
+	if (queue.pTail != nullptr) {
+		return this->queue.pTail->throwPositionY;
+	}
+	return 0;
+}
+int Queue::GetStopPosition() const {
+	if (queue.pTail != nullptr) {
+		return this->queue.pTail->stopPosition;
+	}
+	return 0;
+}
+bool Queue::IsDisappear(Node* node) const {
+	return node->isDisappeared;
+}
+void Queue::SetThrowLeft(bool check) {
+	if (check == true) {
+		this->queue.pTail->throwLeft = true;
+	}
+	else {
+		this->queue.pTail->throwLeft = false;
+	}
+}
+float Queue::GetTimeToMaxHeight()const {
+	if (queue.pTail != nullptr) {
+		return this->queue.pTail->timeToMaxHeight;
+	}
+	return 0;
+}
+bool Queue::IsThrowLeft()const {
+	return this->queue.pTail->throwLeft;
+}
+Node* Queue::ReturnHead() const {
+	Node* temp = this->queue.pHead;
+	return temp;
+}
+Trash* Queue::DeQueue() {
+	if (queue.pHead == nullptr) {
+		return nullptr;
+	}
+	else {
+		Node* tempNode = queue.pHead;
+		Trash* tempTrash = tempNode->trash;
+		queue.pHead = queue.pHead->next;
+		if (queue.pTail->next == queue.pHead) {
+			queue.pTail = queue.pHead;
 		}
+		delete tempNode;
+		tempNode = nullptr;
+		return tempTrash;
 	}
 }

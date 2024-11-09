@@ -2,7 +2,7 @@
 #include "Trash.h"
 
 typedef struct Node {
-	Trash* trash;
+	Trash *trash;
 	int throwPositionX;
 	int throwPositionY;
 	float time;
@@ -18,9 +18,9 @@ typedef struct List {
 }List;
 void InitList(List& list);
 void DeleteList(List& list);
-Node* CreateNode(Trash* trash);
-void AddNode(List& list, Trash* trash);
-void DeleteNode(List& list, Trash* trash);
+Node* CreateNode(Trash *trash);
+void AddNode(List& list, Trash *trash);
+void DeleteNode(List& list, Trash *trash);
 
 typedef struct _Stack {
 	Node* pHead;
@@ -32,6 +32,24 @@ public:
 	Stack();
 	virtual ~Stack();
 	virtual void Push(Trash* trash);
+	Trash* Pop();
+	Node* ReturnHead()const;
+	void DeleteNodeStack(Node* node);
+	friend void InitStack(_Stack& stack);
+	friend void DeleteStack(_Stack& stack);
+	friend class Inventory;
+};
+typedef struct _Queue {
+	Node* pHead;
+	Node* pTail;
+}_Queue;
+class Queue {
+private:
+	_Queue queue;
+public:
+	Queue();
+	virtual ~Queue();
+	virtual void EnQueue(Trash* trash);
 	void SetTime(const float& time);
 	void SetThrowingPosX(const int& x);
 	void SetThrowingPosY(const int& y);
@@ -40,7 +58,6 @@ public:
 	void SetAppeared();
 	void SetThrowLeft(bool check);
 	void SetTimeToMaxHeight(const float& Mtime);
-	Trash* GetTrashInStack(Node* node);
 	float GetTime() const;
 	int GetThrowingPosX() const;
 	int GetThrowingPosY() const;
@@ -48,10 +65,8 @@ public:
 	float GetTimeToMaxHeight() const;
 	bool IsDisappear(Node* node) const;
 	bool IsThrowLeft() const;
-	Trash* Pop();
+	Trash* DeQueue();
 	Node* ReturnHead()const;
-	void DeleteNodeStack(Node* node);
-	friend void InitStack(_Stack& stack);
-	friend void DeleteStack(_Stack& stack);
-	friend class Inventory;
+	friend void InitQueue(_Queue& stack);
+	friend void DeleteQueue(_Queue& stack);
 };
