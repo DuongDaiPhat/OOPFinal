@@ -13,6 +13,10 @@
 //variables:
 //Background:
 BaseObject background;
+//MapGrid
+MapGrid mapGrid[6];
+//AirboneQueue
+AirboneQueue airboneQueue;
 //VerticalHUD
 VerticalHUD verticalHUD;
 //InventoryBar
@@ -21,8 +25,6 @@ InventoryBar inventoryBar;
 Inventory inventory;
 //Character:
 Character redhood;
-//MapGrid
-MapGrid mapGrid[6];
 //Blocking Object
 Fence fence[4];
 Fence vFence[3];
@@ -55,8 +57,6 @@ Trash battery[2];
 Trash electricCircuit[2];
 Trash electricWire[2];
 Trash lightBulb[2];
-//AirboneQueue
-AirboneQueue airboneQueue;
 
 //Function:
 //init
@@ -122,7 +122,7 @@ static void close() {
 	IMG_Quit();
 	SDL_Quit();
 }
-//Working with Grid.
+//Combined Function 1.
 bool check[6] = { false, false, false, false, false, false };
 static void CheckObjectInAllGrid(SDL_Rect objRect) {
 	for (int i = 0; i < 6; i++) {
@@ -231,7 +231,7 @@ static void LoadMapGrid() {
 		mapGrid[i] = MapGrid(GRID_SIZE[i]);
 	}
 }
-bool static LoadAllTrash() {
+static bool LoadAllTrash() {
 	int grid_index;
 	for (int i = 0; i < TRASH_QUANTITIES; i++) {
 		bananaPeel[i] = Trash(TrashType::Organic, TrashSpecificType::BananaPeel);
@@ -421,7 +421,7 @@ static void ShowTrees(int treeNum) {
 		trees[i].Render(g_screen, nullptr);
 	}
 }
-//combined function//
+//combined function 2//
 static void CharacterCollectTrash() {
 	SDL_Rect charRect = redhood.GetRealRect();
 	CheckObjectInAllGrid(charRect);
@@ -484,42 +484,6 @@ static void TrashDeleteCheck() {
 		AddTrashToGrid(tempTrash, grid_index);
 	}
 }
-//Main function:
-static bool initAll() {
-	if (
-		!initGame() ||
-		!loadBackground() ||
-		!verticalHUD.LoadHUD(g_screen) ||
-		!loadRedHood() ||
-		!loadHouse() ||
-		!loadFence(4) ||
-		!loadvFence(3) ||
-		!loadTrees(3) ||
-		!orgBin.LoadBin(g_screen) ||
-		!rioBin.LoadBin(g_screen) ||
-		!nrioBin.LoadBin(g_screen) ||
-		!eBin.LoadBin(g_screen) ||
-		!LoadAllTrash() ||
-		!inventoryBar.LoadInventoryBar(g_screen)
-		) {
-		return false;
-	}
-	return true;
-}
-static void SetUp() {
-	house.SetRect(HOUSE_POS_X, HOUSE_POS_Y, HOUSE_WIDTH, HOUSE_HEIGHT);
-	fence[0].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE1_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
-	fence[1].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE2_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
-	fence[2].SetRect(FENCE_NEAR_TREE_POS_X, FENCE1_NEAR_TREE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
-	fence[3].SetRect(FENCE_NEAR_TREE_POS_X, FENCE2_NEAR_TREE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
-	vFence[0].SetRect(VFENCE1_BELLOW_POS_X, VFENCE_BELLOW_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
-	vFence[1].SetRect(VFENCE2_BELLOW_POS_X, VFENCE_BELLOW_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
-	vFence[2].SetRect(VFENCE_NEAR_HOUSE_POS_X, VFENCE_NEAR_HOUSE_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
-	loadVFenceBoundary(3);
-	trees[0].SetRect(TOP_TREE_POS_X, TOP_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
-	trees[1].SetRect(MIDDLE_TREE_POS_X, MIDDLE_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
-	trees[2].SetRect(BOTTOM_TREE_POS_X, BOTTOM_TREE_POS_Y, LONG_TREE_WIDTH, LONG_TREE_HEIGHT);
-}
 static void FenceBlock() {
 	for (int i = 0; i < 4; i++) {
 		SDL_Rect temp = redhood.GetRealRect();
@@ -570,7 +534,7 @@ static void TreeBlock() {
 static void ThreeDVision() {
 	SDL_Rect RedHoodPos = redhood.GetRect();
 	if (RedHoodPos.y <= 702) {
-		ShowTrashInAllGrid();
+		ShowTrashInAllGrid();	
 		redhood.ShowCharacter(g_screen);
 		vFenceShow(2);
 		rioBin.Render(g_screen, nullptr);
@@ -583,6 +547,42 @@ static void ThreeDVision() {
 		eBin.Render(g_screen, nullptr);
 		redhood.ShowCharacter(g_screen);
 	}
+}
+//Main function:
+static bool initAll() {
+	if (
+		!initGame() ||
+		!loadBackground() ||
+		!verticalHUD.LoadHUD(g_screen) ||
+		!loadRedHood() ||
+		!loadHouse() ||
+		!loadFence(4) ||
+		!loadvFence(3) ||
+		!loadTrees(3) ||
+		!orgBin.LoadBin(g_screen) ||
+		!rioBin.LoadBin(g_screen) ||
+		!nrioBin.LoadBin(g_screen) ||
+		!eBin.LoadBin(g_screen) ||
+		!LoadAllTrash() ||
+		!inventoryBar.LoadInventoryBar(g_screen)
+		) {
+		return false;
+	}
+	return true;
+}
+static void SetUp() {
+	house.SetRect(HOUSE_POS_X, HOUSE_POS_Y, HOUSE_WIDTH, HOUSE_HEIGHT);
+	fence[0].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE1_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	fence[1].SetRect(FENCE_NEAR_HOUSE_POS_X, FENCE2_NEAR_HOUSE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	fence[2].SetRect(FENCE_NEAR_TREE_POS_X, FENCE1_NEAR_TREE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	fence[3].SetRect(FENCE_NEAR_TREE_POS_X, FENCE2_NEAR_TREE_POS_Y, FENCE_WIDTH, FENCE_HEIGHT);
+	vFence[0].SetRect(VFENCE1_BELLOW_POS_X, VFENCE_BELLOW_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
+	vFence[1].SetRect(VFENCE2_BELLOW_POS_X, VFENCE_BELLOW_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
+	vFence[2].SetRect(VFENCE_NEAR_HOUSE_POS_X, VFENCE_NEAR_HOUSE_POS_Y, VFENCE_WIDTH, VFENCE_HEIGHT);
+	loadVFenceBoundary(3);
+	trees[0].SetRect(TOP_TREE_POS_X, TOP_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
+	trees[1].SetRect(MIDDLE_TREE_POS_X, MIDDLE_TREE_POS_Y, TREE_WITDH, TREE_HEIGHT);
+	trees[2].SetRect(BOTTOM_TREE_POS_X, BOTTOM_TREE_POS_Y, LONG_TREE_WIDTH, LONG_TREE_HEIGHT);
 }
 static void RenderALL() {
 	background.Render(g_screen, nullptr);
@@ -614,8 +614,6 @@ static void CharacterAction(float timeCal) {
 int main(int argc, char* argv[]) {
 	//time.
 	int timeCount = 0;
-	timeCount++;
-	float timeCal = (float)timeCount/100;
 	//init
 	LoadMapGrid();
 	if (!initAll()) {
@@ -626,6 +624,8 @@ int main(int argc, char* argv[]) {
 	//running loop
 	bool running = true;
 	while (running) {
+	timeCount++;
+	float timeCal = (float)timeCount/10000;
 		//press ESC to exist
 		SDL_PollEvent(&g_event);
 		if (g_event.key.keysym.sym == SDLK_ESCAPE) {
@@ -654,7 +654,7 @@ int main(int argc, char* argv[]) {
 		if (!airboneQueue.isEmpty()) {
 			TrashDeleteCheck();
 		}
-		if (timeCount > 100) {
+		if (timeCount > 10000) {
 			timeCount = 0;
 		}
 	}
