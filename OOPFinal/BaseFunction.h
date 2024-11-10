@@ -96,7 +96,7 @@ const int BOTTOM_TREE_POS_Y = 596;
 const int TRASH_QUANTITIES = 2;
 //MapGrid Size
 const SDL_Rect GRID1_SIZE = { 0,0,770,576 };
-const SDL_Rect GRID2_SIZE = { 771,0, 511, 576 };
+const SDL_Rect GRID2_SIZE = { 771,0, 575, 576 };
 const SDL_Rect GRID3_SIZE = { 1345, 0, 383, 576 };
 const SDL_Rect GRID4_SIZE = { 0, 577, 768, 504 };
 const SDL_Rect GRID5_SIZE = { 769, 577, 575, 504 };

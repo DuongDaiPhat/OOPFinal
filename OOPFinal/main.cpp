@@ -459,8 +459,8 @@ static void CharacterThrowTrash() {
 		cout << "Loi" << endl;
 	}
 }
-static void ProjectileMove(float time) {
-	airboneQueue.ProjectileCalXY(time, orgBin, rioBin, nrioBin, eBin, verticalHUD);
+static void ProjectileMove() {
+	airboneQueue.ProjectileCalXY(orgBin, rioBin, nrioBin, eBin, verticalHUD);
 	//test
 	Node* tempNode = airboneQueue.ReturnHead();
 	if (tempNode == nullptr) {
@@ -599,7 +599,7 @@ static void RenderALL() {
 	ThreeDVision();
 	airboneQueue.AirboneQueueShow(g_screen);
 }
-static void CharacterAction(float timeCal) {
+static void CharacterAction() {
 	redhood.Move();
 	if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_e && !inventory.IsFull()) {
 		CharacterCollectTrash();
@@ -608,12 +608,10 @@ static void CharacterAction(float timeCal) {
 		CharacterThrowTrash();
 	}
 	if (!airboneQueue.isEmpty()) {
-		ProjectileMove(timeCal);
+		ProjectileMove();
 	}
 }
 int main(int argc, char* argv[]) {
-	//time.
-	int timeCount = 0;
 	//init
 	LoadMapGrid();
 	if (!initAll()) {
@@ -624,8 +622,6 @@ int main(int argc, char* argv[]) {
 	//running loop
 	bool running = true;
 	while (running) {
-	timeCount++;
-	float timeCal = (float)timeCount/10000;
 		//press ESC to exist
 		SDL_PollEvent(&g_event);
 		if (g_event.key.keysym.sym == SDLK_ESCAPE) {
@@ -646,16 +642,13 @@ int main(int argc, char* argv[]) {
 		//Tree block
 		TreeBlock();
 		//Charater Action
-		CharacterAction(timeCal);
+		CharacterAction();
 		//Show Render
 		SDL_RenderPresent(g_screen);
 		//Reset
 		redhood.ResetVelocity();
 		if (!airboneQueue.isEmpty()) {
 			TrashDeleteCheck();
-		}
-		if (timeCount > 10000) {
-			timeCount = 0;
 		}
 	}
 	close();

@@ -14,7 +14,7 @@ public:
 	AirboneQueue();
 	void GetInfomationForCal(SDL_Rect charRect);
 	void EnQueue(Trash* trash, bool throwLeft);
-	void ProjectileCalXY(const float& time, OrgBin& orgBin, RIOBin& rioBin, NRIOBin& nrioBin, EBin& eBin, VerticalHUD& verticalHUD);
+	void ProjectileCalXY(OrgBin& orgBin, RIOBin& rioBin, NRIOBin& nrioBin, EBin& eBin, VerticalHUD& verticalHUD);
 	friend void CalPoint(Node* node, Bin* BinRect, VerticalHUD& verticalHUD, TrashType trashType);
 	void AirboneQueueShow(SDL_Renderer* screen);
 	bool isEmpty();

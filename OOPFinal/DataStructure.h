@@ -6,6 +6,7 @@ typedef struct Node {
 	int throwPositionX;
 	int throwPositionY;
 	float time;
+	float timeCal;
 	float timeToMaxHeight;
 	int stopPosition;
 	bool isDisappeared;
@@ -58,11 +59,13 @@ public:
 	void SetAppeared();
 	void SetThrowLeft(bool check);
 	void SetTimeToMaxHeight(const float& Mtime);
+	void SetTimeCal(const float& Ftime);
 	float GetTime() const;
 	int GetThrowingPosX() const;
 	int GetThrowingPosY() const;
 	int GetStopPosition() const;
 	float GetTimeToMaxHeight() const;
+	float GetTimeCal() const;
 	bool IsDisappear(Node* node) const;
 	bool IsThrowLeft() const;
 	Trash* DeQueue();

@@ -200,6 +200,11 @@ void Queue::SetTimeToMaxHeight(const float& Mtime) {
 		this->queue.pTail->timeToMaxHeight = Mtime;
 	}
 }
+void Queue::SetTimeCal(const float& Ftime) {
+	if (queue.pTail != nullptr) {
+		this->queue.pTail->timeCal = Ftime;
+	}
+}
 float Queue::GetTime() const {
 	if (queue.pTail != nullptr) {
 		return this->queue.pTail->time;
@@ -238,6 +243,12 @@ void Queue::SetThrowLeft(bool check) {
 float Queue::GetTimeToMaxHeight()const {
 	if (queue.pTail != nullptr) {
 		return this->queue.pTail->timeToMaxHeight;
+	}
+	return 0;
+}
+float Queue::GetTimeCal() const {
+	if (queue.pTail != nullptr) {
+		return this->queue.pTail->timeCal;
 	}
 	return 0;
 }
