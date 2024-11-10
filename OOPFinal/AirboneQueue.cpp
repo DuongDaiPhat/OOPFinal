@@ -2,7 +2,9 @@
 #include <cmath>
 
 const double PI = 3.14159265358979;
-const int g = 100;
+const int g = 10;
+const float alpha = PI / 9;
+const int v0 = 35;
 AirboneQueue::AirboneQueue() {
 	x0 = y0 = H = groundPosY = 0;
 }
@@ -18,9 +20,10 @@ void AirboneQueue::EnQueue(Trash* trash, bool throwLeft) {
 	this->SetThrowingPosX(this->x0);
 	this->SetThrowingPosY(this->y0);
 	this->SetTime(0);
+	this->SetTimeCal(0);
 	this->SetStopPosition(groundPosY);
 	this->SetAppeared();
-	float timeToMaxHeight = 0.1;
+	float timeToMaxHeight = 2;
 }
 void CalPoint(Node* node, Bin* bin, VerticalHUD& verticalHUD, TrashType binType) {
 	SDL_Rect trashRect = node->trash->GetRect();
@@ -45,7 +48,7 @@ void CalPoint(Node* node, Bin* bin, VerticalHUD& verticalHUD, TrashType binType)
 	}
 }
 static void makeCoordinateValid(int &posX, int posY, SDL_Rect trashRect) {
-	if (posY <= 440) {
+	if (posY <= 435) {
 		if (posX <= 770) {
 			posX = trashRect.x;
 		}
@@ -58,38 +61,39 @@ static void makeCoordinateValid(int &posX, int posY, SDL_Rect trashRect) {
 	}
 }
 //them & de gan la ban goc chu khong tao copy//
-void AirboneQueue::ProjectileCalXY(const float& time, OrgBin& orgBin, RIOBin& rioBin, NRIOBin& nrioBin, EBin& eBin, VerticalHUD& verticalHUD) {
+void AirboneQueue::ProjectileCalXY(OrgBin& orgBin, RIOBin& rioBin, NRIOBin& nrioBin, EBin& eBin, VerticalHUD& verticalHUD) {
 	Node* temp = this->ReturnHead();
 	while (temp != nullptr) {
 		int _x0 = temp->throwPositionX;
 		int _y0 = temp->throwPositionY;
 		int stopPos = temp->stopPosition;
-		temp->time += time;
+		temp->time += 0.5;
+		temp->timeCal = temp->time/3;
 		float trashWeight = static_cast<float>(temp->trash->GetTrashWeight());
 		//x = x0 + vo*cos(a)*t;
 		//y = y0 + v0*sin(a)*t + (1/2)g*t^2
 		float _xPos, _yPos;
 		if (!temp->throwLeft) {
 			if (trashWeight == 0) {
-				_xPos = _x0 + 300 * cos(PI / 10) * temp->time;
+				_xPos = _x0 + v0 * cos(alpha) * temp->timeCal;
 			}
 			else {
-				_xPos = _x0 + (1 / trashWeight) * 300 * cos(PI / 10) * temp->time;
+				_xPos = _x0 + (0.8 / trashWeight) * v0 * cos(alpha) * temp->timeCal;
 			}
 		}
 		else {
 			if (trashWeight == 0) {
-				_xPos = _x0 - 300 * cos(PI / 10) * temp->time;
+				_xPos = _x0 - v0 * cos(alpha) * temp->timeCal;
 			}
 			else {
-				_xPos = _x0 - (1 / trashWeight) * 300 * cos(PI / 10) * temp->time;
+				_xPos = _x0 - (1 / trashWeight) * v0 * cos(alpha) * temp->timeCal;
 			}
 		}
-		if (temp->time <= temp->timeToMaxHeight) {
-			_yPos = _y0 - 300 * temp->time * sin(PI / 10) - (1 / 2) - g * pow(temp->time, 2);
+		if (temp->timeCal <= temp->timeToMaxHeight) {
+			_yPos = _y0 - v0 * temp->time * sin(alpha) - (1 / 2) - g * pow(temp->timeCal, 2);
 		}
 		else {
-			_yPos = _y0 - 300 * temp->time * sin(PI / 10) - (1 / 2) + g * pow(temp->time, 2);
+			_yPos = _y0 - v0 * temp->time * sin(alpha) - (1 / 2) + g * pow(temp->timeCal, 2);
 		}
 		int setPosX = round(_xPos);
 		int setPosY = round(_yPos);

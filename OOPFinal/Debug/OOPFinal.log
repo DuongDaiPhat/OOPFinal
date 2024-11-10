@@ -1,10 +1,8 @@
 ﻿  AirboneQueue.cpp
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(74,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(77,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(82,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(85,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(89,60): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(92,60): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(94,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(95,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(6,24): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(81,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(93,57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(96,57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(98,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\GameProject\OOPFinal\OOPFinal\AirboneQueue.cpp(99,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   OOPFinal.vcxproj -> D:\GameProject\OOPFinal\Debug\OOPFinal.exe
